@@ -1,0 +1,15 @@
+{
+  "name": "roarmap-view",
+  "version": "1.0.0",
+  "description": "View roarmap policies",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "https://github.com/bassosimone/roarmap-view",
+  "author": "Simone Basso",
+  "license": "MIT",
+  "dependencies": {
+    "fast-csv": "^1.0.0"
+  }
+}
