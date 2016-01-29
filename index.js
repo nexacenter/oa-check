@@ -107,18 +107,22 @@ function applyRules(rules, record) { // Yes, this is O(N^2)
             roarmap_field = rules[i][1],
             if_field_equals = rules[i][2],
             then = rules[i][3],
-            human_rationale = rules[i][4];
+            normalized_field = rules[i][4],
+            human_rationale = rules[i][5];
+        // Check both for the field with incorrect name and the field with
+        // correct name such that this API is future proof
         for (var j = 0; policy_id && j < record.length; ++j) {
             if (record[j][0] === roarmap_field &&
-                record[j][1] === if_field_equals) {
+                (record[j][1] === if_field_equals ||
+                 record[j][1] === normalized_field)) {
                     newRecord.push([
                         policy_id,
                         roarmap_field,
-                        if_field_equals,
+                        normalized_field,  // Postel's law
                         then,
                         human_rationale
                     ]);
-                    // Note: no break since more than one rule may apply
+                    // Note: no `break` since more than one rule may apply
                 }
         }
     }

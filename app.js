@@ -18,6 +18,8 @@ jQuery("load", function () {
                         html += result[i][3];
                         html += "</td><td>";
                         html += result[i][4];
+                        html += "</td><td>";
+                        html += result[i][4];
                         html += "</td></tr>";
                     }
                     html += "</table>";
