@@ -140,7 +140,7 @@ loadRules(function (rules) {
                     response.end("Internal Server Error\n");
                     return;
                 }
-                record = applyRules(rules, asList(simplify(record)));
+                record.compliance = applyRules(rules, asList(simplify(record)));
                 response.writeHead(200, {
                     "Content-Type": "application/json"
                 });

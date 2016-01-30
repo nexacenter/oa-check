@@ -11,20 +11,23 @@ function escapeHtml(unsafe) { // See http://stackoverflow.com/questions/6234773
          .replace(/'/g, "&#039;");
 }
 
-function drawCompliance(title, result) {
-    var html = "<h1>" + escapeHtml(title) + "</h1><table>";
-    for (var i = 0; i < result.length; ++i) {
+function drawCompliance(result) {
+    var html = "<h1>" + escapeHtml(result.title) + "</h1>";
+    html += "<p><a href='" + escapeHtml(result.uri) + "'>"
+                + escapeHtml(result.uri) + "</a></p>";
+    html += "<p><table>";
+    for (var i = 0; i < result.compliance.length; ++i) {
         html += "<tr><td>";
-        html += escapeHtml(result[i][0]);
+        html += escapeHtml(result.compliance[i][0]);
         html += "</td><td>";
-        html += escapeHtml(result[i][1]);
+        html += escapeHtml(result.compliance[i][1]);
         html += "</td><td>";
-        html += escapeHtml(result[i][2]);
+        html += escapeHtml(result.compliance[i][2]);
         html += "</td><td>";
-        html += escapeHtml(result[i][3]);
+        html += escapeHtml(result.compliance[i][3]);
         html += "</td></tr>";
     }
-    html += "</table>";
+    html += "</table></p>";
     jQuery("#university").html(html);
 }
 
@@ -42,10 +45,8 @@ function parseUrl(url) { // See https://gist.github.com/jlong/2428561
     return parser;
 }
 
-function doClick(title, eprintid) {
-    getUniversity(eprintid, function (result) {
-        drawCompliance(title, result);
-    });
+function doClick(eprintid) {
+    getUniversity(eprintid, drawCompliance);
 }
 
 function drawSearchResult(result) {
@@ -62,16 +63,14 @@ function drawSearchResult(result) {
         jQuery("#result-" + i).text(result[i].title);
         jQuery("#result-" + i).attr("eprintid", result[i].eprintid);
         jQuery("#result-" + i).click(function () {
-            doClick(jQuery(this).text(), jQuery(this).attr("eprintid"));
+            doClick(jQuery(this).attr("eprintid"));
         });
     }
 }
 
 function search(terms, cb) {
     if (terms.match(/^[0-9]+$/)) {
-        getUniversity(terms, function (result) {
-            drawCompliance("Univ " + terms, result);
-        });
+        getUniversity(terms, drawCompliance);
         return;
     }
     jQuery.get({
