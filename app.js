@@ -1,8 +1,8 @@
 // This software is free software. See AUTHORS and LICENSE for more
 // information on the copying conditions.
 
-function drawCompliance(result) { // XXX Very naive impl.
-    var html = "<table>";
+function drawCompliance(title, result) { // XXX Very naive impl.
+    var html = "<h1>" + title + "</h1><table>";
     for (var i = 0; i < result.length; ++i) {
         html += "<tr><td>";
         html += result[i][0];
@@ -17,7 +17,7 @@ function drawCompliance(result) { // XXX Very naive impl.
         html += "</td></tr>";
     }
     html += "</table>";
-    jQuery("#result").html(html);
+    jQuery("#university").html(html);
 }
 
 function getUniversity(universityId, callback) {
@@ -28,22 +28,32 @@ function getUniversity(universityId, callback) {
     return false;
 }
 
-function parse_url(url) { // See https://gist.github.com/jlong/2428561
+function parseUrl(url) { // See https://gist.github.com/jlong/2428561
     var parser = document.createElement('a');
     parser.href = url;
     return parser;
+}
+
+function doClick(title, eprintid) {
+    getUniversity(eprintid, function (result) {
+        drawCompliance(title, result);
+    });
 }
 
 function drawSearchResult(result) {
     var html = "<ol>";
     for (var i = 0; i < result.length; ++i) {
         html += "<li>";
-        html += '<a href="#" onclick="getUniversity(' + + result[i].eprintid
-                    + ', drawCompliance);">' + result[i].title + "</a>";
+        html += '<a href="#" onclick="doClick('
+                    + "'" + result[i].title + "' ,"
+                    + result[i].eprintid
+                    + ');">'
+            + result[i].title + "</a>";
         html += "</li>";
     }
     html += "</ol>";
-    jQuery("#result").html(html);
+    jQuery("#search-result").html(html);
+    jQuery("#university").html("");
 }
 
 function searchUniversity(terms, cb) {
@@ -54,12 +64,6 @@ function searchUniversity(terms, cb) {
 }
 
 jQuery("load", function () {
-    jQuery("#submit").click(function () {
-        var value = jQuery("#institution-id").val();
-        if (value.match(/^[0-9]+$/)) {
-            getUniversity(value, drawCompliance);
-        }
-    });
     jQuery("#search").click(function () {
         searchUniversity(jQuery("#search-terms").val(), drawSearchResult);
     });
