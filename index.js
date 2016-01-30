@@ -166,8 +166,8 @@ loadRules(function (rules) {
         }
 
         var realpath;
-        if (request.url === "/" || request.url === "/index.html") {
-            realpath = "index.html";
+        if (request.url === "/") {
+            realpath = "app.html";
         } else if (request.url === "/app.js") {
             realpath = "app.js";
         } else if (request.url === "/app.css") {
