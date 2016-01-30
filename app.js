@@ -12,8 +12,6 @@ function drawCompliance(title, result) { // XXX Very naive impl.
         html += result[i][2];
         html += "</td><td>";
         html += result[i][3];
-        html += "</td><td>";
-        html += result[i][4];
         html += "</td></tr>";
     }
     html += "</table>";
