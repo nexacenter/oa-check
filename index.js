@@ -129,6 +129,29 @@ function getObject(path, callback) {
     });
 }
 
+function searchObject(pattern, callback) {
+    pattern = pattern.replace("/cgi/search/simple?output=JSON&q=", "");
+    pattern = pattern.toLowerCase();
+    kvCache.search([{
+        subject: kvCache.v("uri"),
+        predicate: "title",
+        object: kvCache.v("title")
+    }, {
+        subject: kvCache.v("uri"),
+        predicate: "eprintid",
+        object: kvCache.v("eprintid")
+    }], function (error, triples) {
+        // XXX: Is there a more efficient way than the following?
+        var uris = [];
+        for (var i = 0; i < triples.length; ++i) {
+            if (triples[i].title.toLowerCase().indexOf(pattern) >= 0) {
+                uris.push(triples[i]);
+            }
+        }
+        callback(undefined, uris);
+    });
+}
+
 function loadRules(callback) {
     var rules = [];
     fast_csv
@@ -238,7 +261,7 @@ function runServer (getFunc, searchFunc, rules) {
 
 function doListen() {
     var getFunc = (program.cache) ? getObject : callEprints;
-    var searchFunc = callEprints;
+    var searchFunc = (program.cache) ? searchObject : callEprints;
     loadRules(function (rules) {
         runServer(getFunc, searchFunc, rules);
     });
