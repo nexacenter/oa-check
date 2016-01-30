@@ -132,7 +132,7 @@ function applyRules(rules, record) { // Yes, this is O(N^2)
 loadRules(function (rules) {
     http.createServer(function (request, response) {
 
-        if (request.url.match(/^\/id\/eprint\/[0-9]+/)) {
+        if (request.url.match(/^\/id\/eprint\/[0-9]+$/)) {
             callEprints(request.url, function (error, record) {
                 if (error) {
                     console.log("callEprints error:", error);
@@ -141,6 +141,22 @@ loadRules(function (rules) {
                     return;
                 }
                 record = applyRules(rules, asList(simplify(record)));
+                response.writeHead(200, {
+                    "Content-Type": "application/json"
+                });
+                response.end(JSON.stringify(record));
+            });
+            return;
+        }
+
+        if (request.url.match(/^\/cgi\/search\/simple\?output=JSON&q=.*$/)) {
+            callEprints(request.url, function (error, record) {
+                if (error) {
+                    console.log("callEprints error:", error);
+                    response.writeHead(500);
+                    response.end("Internal Server Error\n");
+                    return;
+                }
                 response.writeHead(200, {
                     "Content-Type": "application/json"
                 });
