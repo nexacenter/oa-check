@@ -4,13 +4,14 @@
   "description": "View roarmap policies",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node index.js -l",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": "https://github.com/bassosimone/roarmap-view",
   "author": "Simone Basso",
   "license": "MIT",
   "dependencies": {
+    "commander": "^2.9.0",
     "fast-csv": "^1.0.0"
   }
 }

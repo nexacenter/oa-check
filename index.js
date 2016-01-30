@@ -23,7 +23,8 @@ var fast_csv = require("fast-csv"),
         "maximal_embargo_waivable": true,
         "open_licensing_conditions": true
     },
-    kvRulesPath = "roarmap-rules.csv";
+    kvRulesPath = "roarmap-rules.csv",
+    program = require("commander");
 
 function simplify(record) {
     var newRecord = {};
@@ -129,7 +130,8 @@ function applyRules(rules, record) { // Yes, this is O(N^2)
     return newRecord;
 }
 
-loadRules(function (rules) {
+// The `rules` argument contains the rules to decide on compliance.
+function runServer (rules) {
     http.createServer(function (request, response) {
 
         if (request.url.match(/^\/id\/eprint\/[0-9]+$/)) {
@@ -189,4 +191,17 @@ loadRules(function (rules) {
     }).listen(kvPort, function () {
         console.log("server listening on port", kvPort);
     });
-});
+}
+
+function doListen() {
+    loadRules(runServer);
+}
+
+program
+    .version("0.0.1")
+    .option("-l, --listen", "Start local web server")
+    .parse(process.argv);
+
+if (program.listen) {
+    doListen();
+}
