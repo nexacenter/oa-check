@@ -1,17 +1,27 @@
 // This software is free software. See AUTHORS and LICENSE for more
 // information on the copying conditions.
 
-function drawCompliance(title, result) { // XXX Very naive impl.
-    var html = "<h1>" + title + "</h1><table>";
+function escapeHtml(unsafe) { // See http://stackoverflow.com/questions/6234773
+    unsafe = unsafe + "";
+    return unsafe
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+}
+
+function drawCompliance(title, result) {
+    var html = "<h1>" + escapeHtml(title) + "</h1><table>";
     for (var i = 0; i < result.length; ++i) {
         html += "<tr><td>";
-        html += result[i][0];
+        html += escapeHtml(result[i][0]);
         html += "</td><td>";
-        html += result[i][1];
+        html += escapeHtml(result[i][1]);
         html += "</td><td>";
-        html += result[i][2];
+        html += escapeHtml(result[i][2]);
         html += "</td><td>";
-        html += result[i][3];
+        html += escapeHtml(result[i][3]);
         html += "</td></tr>";
     }
     html += "</table>";
@@ -42,16 +52,20 @@ function drawSearchResult(result) {
     var html = "<ol>";
     for (var i = 0; i < result.length; ++i) {
         html += "<li>";
-        html += '<a href="#" onclick="doClick('
-                    + "'" + result[i].title + "' ,"
-                    + result[i].eprintid
-                    + ');">'
-            + result[i].title + "</a>";
+        html += '<a href="#" id="result-' + i + '"></a>';
         html += "</li>";
     }
     html += "</ol>";
     jQuery("#search-result").html(html);
     jQuery("#university").html("");
+    for (i = 0; i < result.length; ++i) {
+        jQuery("#result-" + i).text(result[i].title);
+        jQuery("#result-" + i).attr("eprintid", result[i].eprintid);
+        jQuery("#result-" + i).click(function () {
+            console.log(this);
+            doClick(jQuery(this).text(), jQuery(this).attr("eprintid"));
+        });
+    }
 }
 
 function searchUniversity(terms, cb) {
