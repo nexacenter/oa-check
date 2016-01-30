@@ -6,6 +6,11 @@
 var fast_csv = require("fast-csv"),
     fs = require("fs"),
     http = require("http"),
+    level = require("level-browserify"),
+    levelgraph = require("levelgraph"),
+    program = require("commander");
+
+var kvCache = levelgraph(level("cache")),
     kvHostName = 'roarmap.eprints.org',
     kvPort = 8080,
     kvRetainFields = {
@@ -23,8 +28,7 @@ var fast_csv = require("fast-csv"),
         "maximal_embargo_waivable": true,
         "open_licensing_conditions": true
     },
-    kvRulesPath = "roarmap-rules.csv",
-    program = require("commander");
+    kvRulesPath = "roarmap-rules.csv";
 
 function simplify(record) {
     var newRecord = {};
@@ -89,6 +93,42 @@ function callEprints(path, callback) {
     request.end();
 }
 
+function triplesToObject(triples) {
+    var object = {};
+    if (triples.length > 0) {
+        object.uri = triples[0].subject;
+        for (var i = 0; i < triples.length; ++i) {
+            object[triples[i].predicate] = triples[i].object;
+        }
+    }
+    return object;
+}
+
+function objectToTriples(object) {
+    var triples = [];
+    Object.keys(object).forEach(function (key) {
+        if (key !== "uri") {
+            triples.push({
+                subject: object.uri,
+                predicate: key,
+                object: object[key]
+            });
+        }
+    });
+    return triples;
+}
+
+function getObject(path, callback) {
+    var uri = "http://roarmap.eprints.org" + path;
+    kvCache.get({subject: uri}, function (error, triples) {
+        if (error) {
+            callback(error);
+            return;
+        }
+        callback(undefined, triplesToObject(triples));
+    });
+}
+
 function loadRules(callback) {
     var rules = [];
     fast_csv
@@ -130,14 +170,17 @@ function applyRules(rules, record) { // Yes, this is O(N^2)
     return newRecord;
 }
 
-// The `rules` argument contains the rules to decide on compliance.
-function runServer (rules) {
+/// Run the API server.
+/// \param getFunc Function used to get record by id.
+/// \param searchFunc Function used to search by name.
+/// \param fules Rules to evaluate compliance.
+function runServer (getFunc, searchFunc, rules) {
     http.createServer(function (request, response) {
 
         if (request.url.match(/^\/id\/eprint\/[0-9]+$/)) {
-            callEprints(request.url, function (error, record) {
+            getFunc(request.url, function (error, record) {
                 if (error) {
-                    console.log("callEprints error:", error);
+                    console.log("getFunc error:", error);
                     response.writeHead(500);
                     response.end("Internal Server Error\n");
                     return;
@@ -152,9 +195,9 @@ function runServer (rules) {
         }
 
         if (request.url.match(/^\/cgi\/search\/simple\?output=JSON&q=.*$/)) {
-            callEprints(request.url, function (error, record) {
+            searchFunc(request.url, function (error, record) {
                 if (error) {
-                    console.log("callEprints error:", error);
+                    console.log("searchFunc error:", error);
                     response.writeHead(500);
                     response.end("Internal Server Error\n");
                     return;
@@ -194,11 +237,16 @@ function runServer (rules) {
 }
 
 function doListen() {
-    loadRules(runServer);
+    var getFunc = (program.cache) ? getObject : callEprints;
+    var searchFunc = callEprints;
+    loadRules(function (rules) {
+        runServer(getFunc, searchFunc, rules);
+    });
 }
 
 program
     .version("0.0.1")
+    .option("-c, --cache", "Use cache instead of sending requests to roarmap")
     .option("-l, --listen", "Start local web server")
     .parse(process.argv);
 

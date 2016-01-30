@@ -12,6 +12,8 @@
   "license": "MIT",
   "dependencies": {
     "commander": "^2.9.0",
-    "fast-csv": "^1.0.0"
+    "fast-csv": "^1.0.0",
+    "level-browserify": "^1.1.0",
+    "levelgraph": "^1.1.0"
   }
 }
