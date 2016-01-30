@@ -62,13 +62,18 @@ function drawSearchResult(result) {
         jQuery("#result-" + i).text(result[i].title);
         jQuery("#result-" + i).attr("eprintid", result[i].eprintid);
         jQuery("#result-" + i).click(function () {
-            console.log(this);
             doClick(jQuery(this).text(), jQuery(this).attr("eprintid"));
         });
     }
 }
 
-function searchUniversity(terms, cb) {
+function search(terms, cb) {
+    if (terms.match(/^[0-9]+$/)) {
+        getUniversity(terms, function (result) {
+            drawCompliance("Univ " + terms, result);
+        });
+        return;
+    }
     jQuery.get({
         url: "/cgi/search/simple?output=JSON&q=" + encodeURIComponent(terms),
         success: cb
@@ -77,6 +82,6 @@ function searchUniversity(terms, cb) {
 
 jQuery("load", function () {
     jQuery("#search").click(function () {
-        searchUniversity(jQuery("#search-terms").val(), drawSearchResult);
+        search(jQuery("#search-terms").val(), drawSearchResult);
     });
 });
