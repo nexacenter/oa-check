@@ -104,20 +104,6 @@ function triplesToObject(triples) {
     return object;
 }
 
-function objectToTriples(object) {
-    var triples = [];
-    Object.keys(object).forEach(function (key) {
-        if (key !== "uri") {
-            triples.push({
-                subject: object.uri,
-                predicate: key,
-                object: object[key]
-            });
-        }
-    });
-    return triples;
-}
-
 function getObject(path, callback) {
     var uri = "http://roarmap.eprints.org" + path;
     kvCache.get({subject: uri}, function (error, triples) {
@@ -267,12 +253,32 @@ function doListen() {
     });
 }
 
+function doUpdate() {
+    kvCache.del({}, function (error) {
+        if (error) throw error;
+        var all = JSON.parse(fs.readFileSync("roarmap-dump.json", "utf8"));
+        for (var i = 0; i < all.length; ++i) {
+            Object.keys(all[i]).forEach(function (key) {
+                if (key !== "uri") {
+                    kvCache.put({subject: all[i].uri, predicate: key,
+                                 object: all[i][key]});
+                }
+            });
+        }
+    });
+}
+
 program
     .version("0.0.1")
     .option("-c, --cache", "Use cache instead of sending requests to roarmap")
     .option("-l, --listen", "Start local web server")
+    .option("-u, --update", "Update cache from file name roarmap-dump.json")
     .parse(process.argv);
 
 if (program.listen) {
     doListen();
+} else if (program.update) {
+    doUpdate();
+} else {
+    program.help();
 }
