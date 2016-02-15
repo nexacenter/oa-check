@@ -97,28 +97,43 @@ function searchObject(pattern, callback) {
     });
 }
 
+function evaluateRule(rule, record, key, value) {
+    var compliantValues = rule.compliantValues;
+    for (var i = 0; i < 16; ++i) {
+        var compliant = ((typeof compliantValues === "string" &&
+                          value === compliantValues) ||
+                         (compliantValues instanceof Array &&
+                          compliantValues.indexOf(value) >= 0) ||
+                         (compliantValues instanceof Function &&
+                          compliantValues(value, record, key)));
+        if (compliant instanceof Function) {
+            // Handle the case where evaluating a rule returns a more
+            // specific function used to further evaluate
+            compliantValues = compliant;
+            continue;
+        }
+        return {rule: compliantValues, value: compliant};
+    }
+    throw new Error("Recursion limit exceeded");
+}
+
 function applyRules(rules, record) {
     var newRecord = [];
     Object.keys(rules).forEach(function (key) {
         var rule = rules[key],
             value = record[key],
-            compliant = ((typeof rule.compliantValues === "string" &&
-                          value === rule.compliantValues) ||
-                         (rule.compliantValues instanceof Array &&
-                          rule.compliantValues.indexOf(value) >= 0) ||
-                         (rule.compliantValues instanceof Function &&
-                          rule.compliantValues(value, record, key)));
+            compliantRec = evaluateRule(rule, record, key, value);
         newRecord.push({
             criterion_id: rule.criterion_id,
             criterion: key,
             value: (() => (rule.normalize && rule.normalize(value)))() || value,
-            is_compliant: compliant,
+            is_compliant: compliantRec.value,
             guidelines: rule.guidelines,
             gmga: rule.gmga,
             is_compliant_rule: (
-                (rule.compliantValues instanceof Function &&
-                 rule.compliantValues.toString()) ||
-                JSON.stringify(rule.compliantValues)),
+                (compliantRec.rule instanceof Function &&
+                 compliantRec.rule.toString()) ||
+                JSON.stringify(compliantRec.rule)),
             normalize_rule: (
                 (rule.normalize && rule.normalize.toString()) || undefined),
         });

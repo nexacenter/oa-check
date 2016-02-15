@@ -3,12 +3,6 @@
 
 "use strict";
 
-// Returns true if the STEM embarg period is compliant
-var eval_stem_embarg = (value) => (["0m", "6m"].indexOf(value) >= 0);
-
-// Returns true if HASS embarg period is compliant
-var eval_hass_embarg = (value) => (["0m", "6m", "12m"].indexOf(value) >= 0);
-
 // Rules to evaluate compliancy according to Nexa Center
 exports.NEXA_RULES = {
     can_deposit_be_waived: {
@@ -21,16 +15,17 @@ exports.NEXA_RULES = {
     date_made_open: {
         meg_id: 2,
         criterion_id: 10,
-        compliantValues: (value, record) => {
-            if (["acceptance", "publication"].indexOf(value) >= 0) {
-                return true;
-            }
-            if (value !== "embargo") {
-                return false;
-            }
-            return (eval_hass_embarg(record["embargo_hum_soc"]) &&
-                    eval_stem_embarg(record["embargo_sci_tech_med"]));
-        },
+        // Here switch over the many cases and we return a function that
+        // if matched again returns the case. This is to show to the user
+        // exactly which specific rule matched or failed.
+        compliantValues: (v, r) => (
+            (["acceptance", "publication"].indexOf(v) >= 0) ?
+                ((v) => (["acceptance", "publication"].indexOf(v) >= 0)) :
+                    ((v, r) => (v === "embargo"
+                                && ["0m", "6m", "12m"].indexOf(
+                                        r.embargo_hum_soc) >= 0
+                                && ["0m", "6m"].indexOf(
+                                        r.embargo_sci_tech_med) >= 0))),
         guidelines: 3.15,
         gmga: "29.2.2.b",
     },
@@ -54,7 +49,7 @@ exports.NEXA_RULES = {
     embargo_hum_soc: {
         meg_id: 5,
         criterion_id: 16,
-        compliantValues: eval_hass_embarg,
+        compliantValues: (v) => (["0m", "6m", "12m"].indexOf(v) >= 0),
         guidelines: 3.15,
         gmga: "29.2.2.b",
     },
@@ -62,7 +57,7 @@ exports.NEXA_RULES = {
     embargo_sci_tech_med: {
         meg_id: 6,
         criterion_id: 15,
-        compliantValues: eval_stem_embarg,
+        compliantValues: (v) => (["0m", "6m"].indexOf(v) >= 0),
         guidelines: 3.15,
         gmga: "29.2.2.b",
     },
@@ -73,8 +68,8 @@ exports.NEXA_RULES = {
         compliantValues: () => true,
         guidelines: [3.14, 3.16],
         gmga: "29.2.2.b",
-        normalize: (value) => ((value === "reccomended") ? "recommended" :
-                               (value === "reqired") ? "required" : value),
+        normalize: (v) => ((v === "reccomended") ? "recommended" :
+                           (v === "reqired") ? "required" : v),
     },
 
     journal_article_version: {
