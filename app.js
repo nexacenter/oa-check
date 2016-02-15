@@ -17,15 +17,31 @@ function drawCompliance(result) {
                 + escapeHtml(result.uri) + "</a></p>";
     html += "<p><table>";
     for (var i = 0; i < result.compliance.length; ++i) {
-        html += "<tr><td>";
-        html += escapeHtml(result.compliance[i][0]);
-        html += "</td><td>";
-        html += escapeHtml(result.compliance[i][1]);
-        html += "</td><td>";
-        html += escapeHtml(result.compliance[i][2]);
-        html += "</td><td>";
-        html += escapeHtml(result.compliance[i][3]);
-        html += "</td></tr>";
+        var rec = result.compliance[i];
+        if (i === 0) {
+            html += "<tr>";
+            html += "<th>criterion</th>";
+            html += "<th>value</th>";
+            html += "<th>is_compliant_rule</th>";
+            html += "<th>normalize_rule</th>";
+            html += "<th>guidelines</th>";
+            html += "<th>gmga</th>";
+            html += "</tr>";
+        }
+        html += "<tr>";
+        html += "<td>" + escapeHtml(rec.criterion) + "</td>";
+        html += "<td>";
+        if (rec.is_compliant) {
+            html += "<font color='green'>";
+        } else {
+            html += "<font color='red'>";
+        }
+        html += escapeHtml(JSON.stringify(rec.value)) + "</font></td>";
+        html += "<td>" + escapeHtml(rec.is_compliant_rule || "") + "</td>";
+        html += "<td>" + escapeHtml(rec.normalize_rule || "") + "</td>";
+        html += "<td>" + escapeHtml(JSON.stringify(rec.guidelines) || "") + "</td>";
+        html += "<td>" + escapeHtml(JSON.stringify(rec.gmga) || "") + "</td>";
+        html += "</tr>";
     }
     html += "</table></p>";
     jQuery("#university").html(html);

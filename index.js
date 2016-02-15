@@ -3,57 +3,16 @@
 
 "use strict";
 
-var fast_csv = require("fast-csv"),
-    fs = require("fs"),
+var fs = require("fs"),
     http = require("http"),
     level = require("level-browserify"),
     levelgraph = require("levelgraph"),
-    program = require("commander");
+    program = require("commander"),
+    roarmapRules = require("./roarmap-rules").NEXA_RULES,
 
-var kvCache = levelgraph(level("cache")),
+    kvCache = levelgraph(level("cache")),
     kvHostName = 'roarmap.eprints.org',
-    kvPort = 8080,
-    kvRetainFields = {
-        "can_deposit_be_waived": true,
-        "date_made_open": true,
-        "date_of_deposit": true,
-        "embargo_hum_soc": true,
-        "embargo_sci_tech_med": true,
-        "gold_oa_options": true,
-        "iliege_hefce_model": true,
-        "journal_article_version": true,
-        "locus_of_deposit": true,
-        "making_deposit_open": true,
-        "mandate_content_types": true,
-        "maximal_embargo_waivable": true,
-        "open_licensing_conditions": true
-    },
-    kvRulesPath = "roarmap-rules.csv";
-
-function simplify(record) {
-    var newRecord = {};
-    Object.keys(record).forEach(function (key) {
-        if (kvRetainFields[key]) {
-            newRecord[key] = record[key];
-        }
-    });
-    return newRecord;
-}
-
-function asList(record) {
-    var newRecord = [];
-    Object.keys(record).forEach(function (key) {
-        var value = record[key];
-        if (value instanceof Array) {
-            for (var i = 0; i < value.length; ++i) {
-                newRecord.push([key, value[i]]);
-            }
-        } else {
-            newRecord.push([key, value]);
-        }
-    });
-    return newRecord;
-}
+    kvPort = 8080;
 
 function callEprints(path, callback) {
     var request = http.request({
@@ -138,44 +97,32 @@ function searchObject(pattern, callback) {
     });
 }
 
-function loadRules(callback) {
-    var rules = [];
-    fast_csv
-        .fromPath(kvRulesPath)
-        .on("data", function (fields) {
-            rules.push(fields);
-        })
-        .on("end", function () {
-            callback(rules);
-        });
-}
-
-function applyRules(rules, record) { // Yes, this is O(N^2)
+function applyRules(rules, record) {
     var newRecord = [];
-    for (var i = 1; i < rules.length; ++i) {
-        var policy_id = rules[i][0],
-            roarmap_field = rules[i][1],
-            if_field_equals = rules[i][2],
-            then = rules[i][3],
-            normalized_field = rules[i][4],
-            human_rationale = rules[i][5];
-        // Check both for the field with incorrect name and the field with
-        // correct name such that this API is future proof
-        for (var j = 0; policy_id && j < record.length; ++j) {
-            if (record[j][0] === roarmap_field &&
-                (record[j][1] === if_field_equals ||
-                 record[j][1] === normalized_field)) {
-                    newRecord.push([
-                        policy_id,
-                        roarmap_field,
-                        normalized_field,  // Postel's law
-                        then,
-                        human_rationale
-                    ]);
-                    // Note: no `break` since more than one rule may apply
-                }
-        }
-    }
+    Object.keys(rules).forEach(function (key) {
+        var rule = rules[key],
+            value = record[key],
+            compliant = ((typeof rule.compliantValues === "string" &&
+                          value === rule.compliantValues) ||
+                         (rule.compliantValues instanceof Array &&
+                          rule.compliantValues.indexOf(value) >= 0) ||
+                         (rule.compliantValues instanceof Function &&
+                          rule.compliantValues(value, record, key)));
+        newRecord.push({
+            criterion_id: rule.criterion_id,
+            criterion: key,
+            value: (() => (rule.normalize && rule.normalize(value)))() || value,
+            is_compliant: compliant,
+            guidelines: rule.guidelines,
+            gmga: rule.gmga,
+            is_compliant_rule: (
+                (rule.compliantValues instanceof Function &&
+                 rule.compliantValues.toString()) ||
+                JSON.stringify(rule.compliantValues)),
+            normalize_rule: (
+                (rule.normalize && rule.normalize.toString()) || undefined),
+        });
+    });
     return newRecord;
 }
 
@@ -183,7 +130,7 @@ function applyRules(rules, record) { // Yes, this is O(N^2)
 /// \param getFunc Function used to get record by id.
 /// \param searchFunc Function used to search by name.
 /// \param fules Rules to evaluate compliance.
-function runServer (getFunc, searchFunc, rules) {
+function runServer (getFunc, searchFunc) {
     http.createServer(function (request, response) {
 
         if (request.url.match(/^\/id\/eprint\/[0-9]+$/)) {
@@ -194,7 +141,7 @@ function runServer (getFunc, searchFunc, rules) {
                     response.end("Internal Server Error\n");
                     return;
                 }
-                record.compliance = applyRules(rules, asList(simplify(record)));
+                record.compliance = applyRules(roarmapRules, record);
                 response.writeHead(200, {
                     "Content-Type": "application/json"
                 });
@@ -248,9 +195,7 @@ function runServer (getFunc, searchFunc, rules) {
 function doListen() {
     var getFunc = (program.cache) ? getObject : callEprints;
     var searchFunc = (program.cache) ? searchObject : callEprints;
-    loadRules(function (rules) {
-        runServer(getFunc, searchFunc, rules);
-    });
+    runServer(getFunc, searchFunc);
 }
 
 function doUpdate() {
