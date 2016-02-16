@@ -15,5 +15,8 @@
     "level-browserify": "^1.1.0",
     "levelgraph": "^1.1.0",
     "phantomjs-prebuilt": "^2.1.3"
+  },
+  "engines": {
+    "node": "5.x"
   }
 }
