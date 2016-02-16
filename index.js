@@ -104,7 +104,8 @@ function searchObject(pattern, callback) {
 }
 
 function evaluateRule(rule, record, key, value) {
-    var compliantValues = rule.compliantValues;
+    var compliantValues = rule.compliantValues,
+        initialExpr = compliantValues;
     for (var i = 0; i < 16; ++i) {
         var compliant = ((typeof compliantValues === "string" &&
                           value === compliantValues) ||
@@ -118,7 +119,11 @@ function evaluateRule(rule, record, key, value) {
             compliantValues = compliant;
             continue;
         }
-        return {rule: compliantValues, value: compliant};
+        return {
+            clause: compliantValues,
+            expr: initialExpr,
+            value: compliant
+        };
     }
     throw new Error("Recursion limit exceeded");
 }
@@ -136,11 +141,15 @@ function applyRules(rules, record) {
             is_compliant: compliantRec.value,
             guidelines: rule.guidelines,
             gmga: rule.gmga,
-            is_compliant_rule: (
-                (compliantRec.rule instanceof Function &&
-                 compliantRec.rule.toString()) ||
-                JSON.stringify(compliantRec.rule)),
-            normalize_rule: (
+            is_compliant_expr: (
+                (compliantRec.expr instanceof Function &&
+                 compliantRec.expr.toString()) ||
+                JSON.stringify(compliantRec.expr)),
+            specific_clause: (
+                (compliantRec.clause instanceof Function &&
+                 compliantRec.clause.toString()) ||
+                JSON.stringify(compliantRec.clause)),
+            normalize_expr: (
                 (rule.normalize && rule.normalize.toString()) || undefined),
         });
     });
