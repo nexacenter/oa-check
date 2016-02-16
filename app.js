@@ -15,6 +15,7 @@ function drawCompliance(result) {
     var html = "<h1>" + escapeHtml(result.title) + "</h1>";
     html += "<p><a href='" + escapeHtml(result.uri) + "'>"
                 + escapeHtml(result.uri) + "</a></p>";
+    html += "<p><a href='#' id='toggle-debug'>toggle debug</a></p>";
     html += "<p><table>";
     for (var i = 0; i < result.compliance.length; ++i) {
         var rec = result.compliance[i];
@@ -22,8 +23,8 @@ function drawCompliance(result) {
             html += "<tr>";
             html += "<th>criterion</th>";
             html += "<th>value</th>";
-            html += "<th>is_compliant_rule</th>";
-            html += "<th>normalize_rule</th>";
+            html += "<th style='display: none' class='debug-info'>is_compliant_rule</th>";
+            html += "<th style='display: none' class='debug-info'>normalize_rule</th>";
             html += "<th>guidelines</th>";
             html += "<th>gmga</th>";
             html += "</tr>";
@@ -37,14 +38,18 @@ function drawCompliance(result) {
             html += "<font color='red'>";
         }
         html += escapeHtml(JSON.stringify(rec.value)) + "</font></td>";
-        html += "<td>" + escapeHtml(rec.is_compliant_rule || "") + "</td>";
-        html += "<td>" + escapeHtml(rec.normalize_rule || "") + "</td>";
+        html += "<td style='display: none' class='debug-info'>" + escapeHtml(rec.is_compliant_rule || "") + "</td>";
+        html += "<td style='display: none' class='debug-info'>" + escapeHtml(rec.normalize_rule || "") + "</td>";
         html += "<td>" + escapeHtml(JSON.stringify(rec.guidelines) || "") + "</td>";
         html += "<td>" + escapeHtml(JSON.stringify(rec.gmga) || "") + "</td>";
         html += "</tr>";
     }
     html += "</table></p>";
     jQuery("#university").html(html);
+    jQuery("#toggle-debug").click(function () {
+        jQuery(".debug-info").toggle();
+        return false;
+    });
 }
 
 function getUniversity(universityId, callback) {
