@@ -12,7 +12,7 @@ var fs = require("fs"),
 
     kvCache = levelgraph(level("cache")),
     kvHostName = 'roarmap.eprints.org',
-    kvPort = 8080;
+    kvPort = process.env.PORT || 8080;
 
 function callEprints(path, callback) {
     var request = http.request({
