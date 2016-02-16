@@ -55,7 +55,11 @@ function drawCompliance(result) {
 function getUniversity(universityId, callback) {
     jQuery.get({
         url: "/id/eprint/" + universityId,
-        success: callback
+        success: callback,
+        error: function (_, s, e) {
+            jQuery("#university").html("<p>Failure: type=" + escapeHtml(s)
+                + ", reason=" + escapeHtml(e) + "</p>");
+        },
     });
     return false;
 }
@@ -96,7 +100,11 @@ function search(terms, cb) {
     }
     jQuery.get({
         url: "/cgi/search/simple?output=JSON&q=" + encodeURIComponent(terms),
-        success: cb
+        success: cb,
+        error: function (_, s, e) {
+            jQuery("#search-result").html("<p>Failure: type=" + escapeHtml(s)
+                + ": reason=" + escapeHtml(e) + "</p>");
+        },
     });
 }
 

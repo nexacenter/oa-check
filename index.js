@@ -25,7 +25,7 @@ function callEprints(path, callback) {
     }, function (response) {
         if (response.statusCode !== 200) {
             response.resume();
-            callback(new Error("unexpected status code"));
+            callback(new Error("BadStatusCode"));
             return;
         }
         response.on("error", function (error) {
@@ -34,6 +34,9 @@ function callEprints(path, callback) {
         var body = "";
         response.on("data", function (data) {
             body += data;
+        });
+        response.setTimeout(2000, function () {
+            callback(new Error("TimeoutError"));
         });
         response.on("end", function () {
             var record;
@@ -45,6 +48,9 @@ function callEprints(path, callback) {
             }
             callback(undefined, record);
         });
+    });
+    request.setTimeout(2000, function () {
+        callback(new Error("TimeoutError"));
     });
     request.on("error", function (error) {
         callback(error);
@@ -141,6 +147,19 @@ function applyRules(rules, record) {
     return newRecord;
 }
 
+function processError(error, response) {
+    if (error.message === "TimeoutError") {
+        response.writeHead(504);
+        response.end("Gateway Timeout\n");
+    } else if (error.message === "BadStatusCode") {
+        response.writeHead(502);
+        response.end("Bad Gateway\n");
+    } else {
+        response.writeHead(500);
+        response.end("Internal Server Error\n");
+    }
+}
+
 /// Run the API server.
 /// \param getFunc Function used to get record by id.
 /// \param searchFunc Function used to search by name.
@@ -152,8 +171,7 @@ function runServer (getFunc, searchFunc) {
             getFunc(request.url, function (error, record) {
                 if (error) {
                     console.log("getFunc error:", error);
-                    response.writeHead(500);
-                    response.end("Internal Server Error\n");
+                    processError(error, response);
                     return;
                 }
                 record.compliance = applyRules(roarmapRules, record);
@@ -169,8 +187,7 @@ function runServer (getFunc, searchFunc) {
             searchFunc(request.url, function (error, record) {
                 if (error) {
                     console.log("searchFunc error:", error);
-                    response.writeHead(500);
-                    response.end("Internal Server Error\n");
+                    processError(error, response);
                     return;
                 }
                 response.writeHead(200, {
