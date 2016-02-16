@@ -11,6 +11,21 @@ function escapeHtml(unsafe) { // See http://stackoverflow.com/questions/6234773
          .replace(/'/g, "&#039;");
 }
 
+function drawDetails(info) {
+    var html = "<td>";
+    if (info instanceof Array) {
+        for (var i = 0; i < info; ++i) {
+            html += "<a href='details.html#" + escapeHtml(info[i])
+                    + "'>" + escapeHtml(info[i]) + "</a>";
+        }
+    } else if (info) {
+        html += "<a href='details.html#" + escapeHtml(info)
+                + "'>" + escapeHtml(info) + "</a>";
+    }
+    html += "</td>";
+    return html;
+}
+
 function drawCompliance(result) {
     var html = "<h1>" + escapeHtml(result.title) + "</h1>";
     html += "<p><a href='" + escapeHtml(result.uri) + "'>"
@@ -56,8 +71,8 @@ function drawCompliance(result) {
             html += "<td>N/A</td>";
         }
         html += "<td style='display: none' class='debug-info'>" + escapeHtml(rec.normalize_expr || "") + "</td>";
-        html += "<td>" + escapeHtml(JSON.stringify(rec.guidelines) || "") + "</td>";
-        html += "<td>" + escapeHtml(JSON.stringify(rec.gmga) || "") + "</td>";
+        html += drawDetails(rec.guidelines);
+        html += drawDetails(rec.gmga);
         html += "</tr>";
     }
     html += "</table></p>";

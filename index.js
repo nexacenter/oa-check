@@ -214,6 +214,8 @@ function runServer (getFunc, searchFunc) {
             realpath = "app.js";
         } else if (request.url === "/app.css") {
             realpath = "app.css";
+        } else if (request.url === "/details.html") {
+            realpath = "details.html";
         }
 
         if (realpath) {
