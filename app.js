@@ -24,7 +24,6 @@ function drawCompliance(result) {
             html += "<th>field</th>";
             html += "<th>value</th>";
             html += "<th style='display: none' class='debug-info'>is_compliant_expr</th>";
-            html += "<th style='display: none' class='debug-info'>specific_clause</th>";
             html += "<th style='display: none' class='debug-info'>normalize_expr</th>";
             html += "<th>guidelines</th>";
             html += "<th>gmga</th>";
@@ -39,8 +38,23 @@ function drawCompliance(result) {
             html += "<font color='red'>";
         }
         html += escapeHtml(JSON.stringify(rec.value)) + "</font></td>";
-        html += "<td style='display: none' class='debug-info'>" + escapeHtml(rec.is_compliant_expr || "") + "</td>";
-        html += "<td style='display: none' class='debug-info'>" + escapeHtml(rec.specific_clause || "") + "</td>";
+        var idx = rec.is_compliant_expr.lastIndexOf(rec.specific_clause);
+        if (idx >= 0) {
+            html += "<td style='display: none' class='debug-info'>";
+            html += escapeHtml(rec.is_compliant_expr.substr(0, idx));
+            if (rec.is_compliant) {
+                html += "<font color='green'><b>";
+            } else {
+                html += "<font color='red'><b>";
+            }
+            html += escapeHtml(rec.specific_clause);
+            html += "</b></font>";
+            html += escapeHtml(rec.is_compliant_expr.substr(
+                    idx + rec.specific_clause.length));
+            html += "</td>";
+        } else {
+            html += "<td>N/A</td>";
+        }
         html += "<td style='display: none' class='debug-info'>" + escapeHtml(rec.normalize_expr || "") + "</td>";
         html += "<td>" + escapeHtml(JSON.stringify(rec.guidelines) || "") + "</td>";
         html += "<td>" + escapeHtml(JSON.stringify(rec.gmga) || "") + "</td>";
