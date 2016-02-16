@@ -16,11 +16,11 @@ function drawDetails(info) {
     if (info instanceof Array) {
         for (var i = 0; i < info; ++i) {
             html += "<a href='details.html#" + escapeHtml(info[i])
-                    + "'>" + escapeHtml(info[i]) + "</a>";
+                    + "' target='_blank'>" + escapeHtml(info[i]) + "</a>";
         }
     } else if (info) {
         html += "<a href='details.html#" + escapeHtml(info)
-                + "'>" + escapeHtml(info) + "</a>";
+                + "' target='_blank'>" + escapeHtml(info) + "</a>";
     }
     html += "</td>";
     return html;

@@ -1,8 +1,11 @@
 <html>
 <head>
-<title>Roarmap H2020 view: explanation page</title>
+  <meta charset="UTF-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  <title>Roarmap H2020 view: explanation page</title>
 </head>
-<body>
+  <body>
+
 <p id="29.1.1">
 Unless it goes against their legitimate interests, each beneficiary must - as soon as possible
 - "disseminate" its results by disclosing them to the public by appropriate means (other than
@@ -249,5 +252,14 @@ uniquely attributable, through identifiers which are persistent, non-proprietary
 interoperable (e.g. through leveraging existing sustainable initiatives such as ORCID for
 contributor identifiers and DataCite for data identifiers). [Guidelines]
 </p>
-</body>
+
+  <script>
+jQuery("load", function () {
+  var hash = window.location.hash;
+  hash = hash.replace(/\./g, "\\.");
+  jQuery(hash).css("background-color", "#f3f781");
+});
+  </script>
+
+  </body>
 </html>
