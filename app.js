@@ -69,6 +69,7 @@ function drawCompliance(result) {
 }
 
 function getUniversity(universityId, callback) {
+    jQuery("#university").html("Getting info about universityId: " + universityId + "...");
     jQuery.get({
         url: "/id/eprint/" + universityId,
         success: callback,
@@ -114,6 +115,7 @@ function search(terms, cb) {
         getUniversity(terms, drawCompliance);
         return;
     }
+    jQuery("#search-result").html("Searching for: " + terms + "... ");
     jQuery.get({
         url: "/cgi/search/simple?output=JSON&q=" + encodeURIComponent(terms),
         success: cb,
