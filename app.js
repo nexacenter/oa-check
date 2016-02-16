@@ -21,7 +21,7 @@ function drawCompliance(result) {
         var rec = result.compliance[i];
         if (i === 0) {
             html += "<tr>";
-            html += "<th>criterion</th>";
+            html += "<th>field</th>";
             html += "<th>value</th>";
             html += "<th style='display: none' class='debug-info'>is_compliant_rule</th>";
             html += "<th style='display: none' class='debug-info'>normalize_rule</th>";
@@ -30,7 +30,7 @@ function drawCompliance(result) {
             html += "</tr>";
         }
         html += "<tr>";
-        html += "<td>" + escapeHtml(rec.criterion) + "</td>";
+        html += "<td>" + escapeHtml(rec.field) + "</td>";
         html += "<td>";
         if (rec.is_compliant) {
             html += "<font color='green'>";

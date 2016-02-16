@@ -124,8 +124,8 @@ function applyRules(rules, record) {
             value = record[key],
             compliantRec = evaluateRule(rule, record, key, value);
         newRecord.push({
-            criterion_id: rule.criterion_id,
-            criterion: key,
+            field_id: rule.field_id,
+            field: key,
             value: (() => (rule.normalize && rule.normalize(value)))() || value,
             is_compliant: compliantRec.value,
             guidelines: rule.guidelines,

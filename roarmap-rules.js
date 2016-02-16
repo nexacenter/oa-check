@@ -7,14 +7,14 @@
 exports.NEXA_RULES = {
     can_deposit_be_waived: {
         meg_id: 1,
-        criterion_id: 7,
+        field_id: 7,
         compliantValues: "yes",
         guidelines: 3.13
     },
 
     date_made_open: {
         meg_id: 2,
-        criterion_id: 10,
+        field_id: 10,
         // Here switch over the many cases and we return a function that
         // if matched again returns the case. This is to show to the user
         // exactly which specific rule matched or failed.
@@ -32,7 +32,7 @@ exports.NEXA_RULES = {
 
     date_of_deposit: {
         meg_id: 3,
-        criterion_id: 16,
+        field_id: 16,
         compliantValues: ["acceptance", "publication"],
         guidelines: [3.7, 3.9],
         gmga: "29.2.2.a.1",
@@ -40,7 +40,7 @@ exports.NEXA_RULES = {
 
     deposit_of_item: {
         meg_id: 4,
-        criterion_id: 2,
+        field_id: 2,
         compliantValues: "required",
         guidelines: 3.7,
         gmga: ["29.2.2.a.1", "29.2.2.c.1"],
@@ -48,7 +48,7 @@ exports.NEXA_RULES = {
 
     embargo_hum_soc: {
         meg_id: 5,
-        criterion_id: 16,
+        field_id: 16,
         compliantValues: (v) => (["0m", "6m", "12m"].indexOf(v) >= 0),
         guidelines: 3.15,
         gmga: "29.2.2.b",
@@ -56,7 +56,7 @@ exports.NEXA_RULES = {
 
     embargo_sci_tech_med: {
         meg_id: 6,
-        criterion_id: 15,
+        field_id: 15,
         compliantValues: (v) => (["0m", "6m"].indexOf(v) >= 0),
         guidelines: 3.15,
         gmga: "29.2.2.b",
@@ -64,7 +64,7 @@ exports.NEXA_RULES = {
 
     gold_oa_options: {
         meg_id: 7,
-        criterion_id: 19,
+        field_id: 19,
         compliantValues: () => true,
         guidelines: [3.14, 3.16],
         gmga: "29.2.2.b",
@@ -74,7 +74,7 @@ exports.NEXA_RULES = {
 
     journal_article_version: {
         meg_id: 8,
-        criterion_id: 6,
+        field_id: 6,
         compliantValues: ["author_final", "published"],
         guidelines: [3.7, 3.9, 3.15],
         gmga: "29.2.2.a.1",
@@ -82,7 +82,7 @@ exports.NEXA_RULES = {
 
     locus_of_deposit: {
         meg_id: 9,
-        criterion_id: 3,
+        field_id: 3,
         compliantValues: ["any_repo", "institution_repo", "suject_repo"],
         guidelines: [3.7, 3.10, 3.15],
         gmga: "29.2.2.a.1",
@@ -90,7 +90,7 @@ exports.NEXA_RULES = {
 
     making_deposit_open: {
         meg_id: 10,
-        criterion_id: 8,
+        field_id: 8,
         compliantValues: "required",
         guidelines: [3.2, 3.16, 3.18],
         gmga: ["29.1.1", "29.2.1", "29.2.2.b", "29.2.2.c.1"],
@@ -98,7 +98,7 @@ exports.NEXA_RULES = {
 
     maximal_embargo_waivable: {
         meg_id: 11,
-        criterion_id: 17,
+        field_id: 17,
         compliantValues: "no",
         guidelines: 3.15,
         gmga: "29.2.2.b",
@@ -106,20 +106,20 @@ exports.NEXA_RULES = {
 
     open_access_waivable: {
         meg_id: 12,
-        criterion_id: 9,
+        field_id: 9,
         compliantValues: "yes", // FIXME: I think this is wrong
         gmga: ["29.1.1", "29.1.2"],
     },
 
     open_licensing_conditions: {
         meg_id: 13,
-        criterion_id: 18,
+        field_id: 18,
         compliantValues: "req_cc_by",
         guidelines: [3.3, 3.20],
     },
 
     mandate_content_types: {
-        criterion_id: 5,
+        field_id: 5,
         compliantValues: (value) => (
             value.indexOf("not_specified") < 0
         ),
