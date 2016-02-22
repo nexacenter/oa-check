@@ -8,7 +8,7 @@ exports.NEXA_RULES = {
     can_deposit_be_waived: {
         meg_id: 1,
         field_id: 7,
-        compliantValues: "yes",
+        compliantValues: "no",
         guidelines: 3.13
     },
 
