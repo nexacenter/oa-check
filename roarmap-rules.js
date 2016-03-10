@@ -9,7 +9,7 @@ exports.NEXA_RULES = {
         meg_id: 1,
         field_id: 7,
         compliantValues: "no",
-        guidelines: 3.13
+        guidelines: 3.12
     },
 
     date_made_open: {
@@ -34,7 +34,7 @@ exports.NEXA_RULES = {
                         r.embargo_hum_soc) >= 0))
                   : ((v, r) => (["0m", "6m"].indexOf(
                         r.embargo_sci_tech_med) >= 0))),
-        guidelines: 3.15,
+        guidelines: 3.14,
         gmga: "29.2.2.b",
     },
 
@@ -42,7 +42,7 @@ exports.NEXA_RULES = {
         meg_id: 3,
         field_id: 16,
         compliantValues: ["acceptance", "publication"],
-        guidelines: [3.7, 3.9],
+        guidelines: [3.6, 3.8],
         gmga: "29.2.2.a.1",
     },
 
@@ -50,7 +50,7 @@ exports.NEXA_RULES = {
         meg_id: 4,
         field_id: 2,
         compliantValues: "required",
-        guidelines: 3.7,
+        guidelines: 3.6,
         gmga: ["29.2.2.a.1", "29.2.2.c.1"],
     },
 
@@ -58,7 +58,7 @@ exports.NEXA_RULES = {
         meg_id: 5,
         field_id: 16,
         compliantValues: (v) => (["0m", "6m", "12m"].indexOf(v) >= 0),
-        guidelines: 3.15,
+        guidelines: 3.14,
         gmga: "29.2.2.b",
     },
 
@@ -66,7 +66,7 @@ exports.NEXA_RULES = {
         meg_id: 6,
         field_id: 15,
         compliantValues: (v) => (["0m", "6m"].indexOf(v) >= 0),
-        guidelines: 3.15,
+        guidelines: 3.14,
         gmga: "29.2.2.b",
     },
 
@@ -74,7 +74,7 @@ exports.NEXA_RULES = {
         meg_id: 7,
         field_id: 19,
         compliantValues: () => true,
-        guidelines: [3.14, 3.16],
+        guidelines: [3.5, 3.13, 3.15],
         gmga: "29.2.2.b",
         normalize: (v) => ((v === "reccomended") ? "recommended" :
                            (v === "reqired") ? "required" : v),
@@ -84,7 +84,7 @@ exports.NEXA_RULES = {
         meg_id: 8,
         field_id: 6,
         compliantValues: ["author_final", "published"],
-        guidelines: [3.7, 3.9, 3.15],
+        guidelines: [3.6, 3.8, 3.14],
         gmga: "29.2.2.a.1",
     },
 
@@ -92,7 +92,7 @@ exports.NEXA_RULES = {
         meg_id: 9,
         field_id: 3,
         compliantValues: ["any_repo", "institution_repo", "suject_repo"],
-        guidelines: [3.7, 3.10, 3.15],
+        guidelines: [3.6, 3.9, 3.14],
         gmga: "29.2.2.a.1",
     },
 
@@ -100,22 +100,22 @@ exports.NEXA_RULES = {
         meg_id: 10,
         field_id: 8,
         compliantValues: "required",
-        guidelines: [3.2, 3.16, 3.18],
+        guidelines: [3.1, 3.15, 3.17],
         gmga: ["29.1.1", "29.2.1", "29.2.2.b", "29.2.2.c.1"],
     },
 
     maximal_embargo_waivable: {
         meg_id: 11,
         field_id: 17,
-        compliantValues: "no",
-        guidelines: 3.15,
+        compliantValues: ["no", "not_specified"],
+        guidelines: 3.14,
         gmga: "29.2.2.b",
     },
 
     open_access_waivable: {
         meg_id: 12,
         field_id: 9,
-        compliantValues: "yes", // FIXME: I think this is wrong
+        compliantValues: "no",
         gmga: ["29.1.1", "29.1.2"],
     },
 
@@ -123,7 +123,7 @@ exports.NEXA_RULES = {
         meg_id: 13,
         field_id: 18,
         compliantValues: "req_cc_by",
-        guidelines: [3.3, 3.20],
+        guidelines: [3.2, 3.20],
     },
 
     mandate_content_types: {
@@ -131,7 +131,7 @@ exports.NEXA_RULES = {
         compliantValues: (value) => (
             value.indexOf("not_specified") < 0
         ),
-        guidelines: [3.2, 3.4, 3.5, 3.11],
+        guidelines: [3.1, 3.3, 3.4, 3.11],
         gmga: ["29.2.1", "29.2.2.a.2"],
     },
 };
