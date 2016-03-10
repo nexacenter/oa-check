@@ -14,13 +14,13 @@ function escapeHtml(unsafe) { // See http://stackoverflow.com/questions/6234773
 function drawDetails(info) {
     var html = "<td>";
     if (info instanceof Array) {
-        for (var i = 0; i < info; ++i) {
+        for (var i = 0; i < info.length; ++i) {
             html += "<a href='details.html#" + escapeHtml(info[i])
-                    + "' target='_blank'>" + escapeHtml(info[i]) + "</a>";
+                    + "' target='_blank'>[" + escapeHtml(info[i]) + "]</a> ";
         }
     } else if (info) {
         html += "<a href='details.html#" + escapeHtml(info)
-                + "' target='_blank'>" + escapeHtml(info) + "</a>";
+                + "' target='_blank'>[" + escapeHtml(info) + "]</a>";
     }
     html += "</td>";
     return html;
