@@ -57,7 +57,7 @@ exports.NEXA_RULES = {
     embargo_hum_soc: {
         meg_id: 5,
         field_id: 16,
-        compliantValues: (v) => (["0m", "6m", "12m"].indexOf(v) >= 0),
+        compliantValues: ["0m", "6m", "12m"],
         guidelines: 3.14,
         gmga: "29.2.2.b",
     },
@@ -65,7 +65,7 @@ exports.NEXA_RULES = {
     embargo_sci_tech_med: {
         meg_id: 6,
         field_id: 15,
-        compliantValues: (v) => (["0m", "6m"].indexOf(v) >= 0),
+        compliantValues: ["0m", "6m"],
         guidelines: 3.14,
         gmga: "29.2.2.b",
     },
