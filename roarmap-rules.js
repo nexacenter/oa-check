@@ -112,7 +112,7 @@ exports.NEXA_RULES = {
         gmga: "29.2.2.b",
     },
 
-    open_access_waivable: {
+    waive_open_access: {
         meg_id: 12,
         field_id: 9,
         compliantValues: "no",
