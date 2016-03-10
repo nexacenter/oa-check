@@ -106,6 +106,13 @@ exports.NEXA_RULES = {
         ),
         guidelines: 3.14,
         gmga: "29.2.2.b",
+        fuzzyLabels: {
+            0.25: "Please note that European Commission does not " +
+                  "expressly state that maximal embargo cannot be " +
+                  "waived. However, given that a maximal embargo " +
+                  "is established, and no exceptions are mentioned, " +
+                  "it is reasonable to believe that waiver is not admitted.",
+        },
     },
 
     waive_open_access: {
@@ -119,6 +126,14 @@ exports.NEXA_RULES = {
               : false
         ),
         gmga: ["29.1.1", "29.1.2"],
+        fuzzyLabels: {
+            0.75: "However, please note that Open Access must be " +
+                  "sacrificed when specific conflicting obligations " +
+                  "to be respected subsist.",
+            0.25: "Except if the waiver is limited to specific exceptions " +
+                  "introduced in order to safeguard specific obligations " +
+                  "conflicting with Open Access.",
+        },
     },
 
     open_licensing_conditions: {
