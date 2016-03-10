@@ -9,7 +9,6 @@ var fs = require("fs"),
     levelgraph = require("levelgraph"),
     program = require("commander"),
     roarmapRules = require("./roarmap-rules").NEXA_RULES,
-
     kvCache = levelgraph(level("cache")),
     kvHostName = 'roarmap.eprints.org',
     kvPort = process.env.PORT || 8080;
