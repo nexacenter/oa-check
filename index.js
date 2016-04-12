@@ -114,6 +114,7 @@ function evaluateRule(rule, record, key, value) {
     return {
         clause: compliantValues,
         expr: initialExpr,
+        fuzzyLabel: (rule.fuzzyLabels && rule.fuzzyLabels[compliant]),
         value: compliant
     };
 }
@@ -142,6 +143,7 @@ function applyRules(rules, record) {
                 JSON.stringify(compliantRec.clause)),
             normalize_expr: (
                 (rule.normalize && rule.normalize.toString()) || undefined),
+            fuzzy_label: compliantRec.fuzzyLabel,
         });
     });
     return newRecord;

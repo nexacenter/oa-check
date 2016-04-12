@@ -38,6 +38,7 @@ function drawCompliance(result) {
             html += "<tr>";
             html += "<th>field</th>";
             html += "<th>value</th>";
+            html += "<th>fuzzy_label</th>";
             html += "<th style='display: none' class='debug-info'>is_compliant_expr</th>";
             html += "<th style='display: none' class='debug-info'>normalize_expr</th>";
             html += "<th>guidelines</th>";
@@ -53,6 +54,7 @@ function drawCompliance(result) {
             html += "<font color='red'>";
         }
         html += escapeHtml(JSON.stringify(rec.value)) + "</font></td>";
+        html += "<td>" + escapeHtml(rec.fuzzy_label || "") + "</td>";
         var idx = rec.is_compliant_expr.lastIndexOf(rec.specific_clause);
         if (idx >= 0) {
             html += "<td style='display: none' class='debug-info'>";
