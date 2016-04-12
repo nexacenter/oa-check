@@ -202,13 +202,13 @@ function runServer (getFunc, searchFunc) {
 
         var realpath;
         if (request.url === "/") {
-            realpath = "app.html";
+            realpath = "static/app.html";
         } else if (request.url === "/app.js") {
-            realpath = "app.js";
+            realpath = "static/app.js";
         } else if (request.url === "/app.css") {
-            realpath = "app.css";
+            realpath = "static/app.css";
         } else if (request.url === "/details.html") {
-            realpath = "details.html";
+            realpath = "static/details.html";
         }
 
         if (realpath) {
