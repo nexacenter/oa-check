@@ -105,26 +105,17 @@ function searchObject(pattern, callback) {
 function evaluateRule(rule, record, key, value) {
     var compliantValues = rule.compliantValues,
         initialExpr = compliantValues;
-    for (var i = 0; i < 16; ++i) {
-        var compliant = ((typeof compliantValues === "string" &&
-                          value === compliantValues) ||
-                         (compliantValues instanceof Array &&
-                          compliantValues.indexOf(value) >= 0) ||
-                         (compliantValues instanceof Function &&
-                          compliantValues(value, record, key)));
-        if (compliant instanceof Function) {
-            // Handle the case where evaluating a rule returns a more
-            // specific function used to further evaluate
-            compliantValues = compliant;
-            continue;
-        }
-        return {
-            clause: compliantValues,
-            expr: initialExpr,
-            value: compliant
-        };
-    }
-    throw new Error("Recursion limit exceeded");
+    var compliant = ((typeof compliantValues === "string" &&
+                      value === compliantValues) ||
+                     (compliantValues instanceof Array &&
+                      compliantValues.indexOf(value) >= 0) ||
+                     (compliantValues instanceof Function &&
+                      compliantValues(value, record, key)));
+    return {
+        clause: compliantValues,
+        expr: initialExpr,
+        value: compliant
+    };
 }
 
 function applyRules(rules, record) {

@@ -15,25 +15,13 @@ exports.NEXA_RULES = {
     date_made_open: {
         meg_id: 2,
         field_id: 10,
-        // Here switch over the many cases and we return a function that
-        // if matched again returns the case. This is to show to the user
-        // exactly which specific rule matched or failed.
         compliantValues: (v, r) => (
           (["acceptance", "publication"].indexOf(v) >= 0)
-            ? ((v) => (["acceptance", "publication"].indexOf(v) >= 0))
+            ? true
             : (v === "embargo" &&
                   ["0m", "6m", "12m"].indexOf(r.embargo_hum_soc) >= 0 &&
                   ["0m", "6m"].indexOf(r.embargo_sci_tech_med) >= 0)
-              ? ((v, r) => (v === "embargo" &&
-                      ["0m", "6m", "12m"].indexOf(r.embargo_hum_soc) >= 0 &&
-                      ["0m", "6m"].indexOf(r.embargo_sci_tech_med) >= 0))
-              : (v !== "embargo")
-                ? ((v) => (v === "embargo"))
-                : (["0m", "6m", "12m"].indexOf(r.embargo_hum_soc) < 0)
-                  ? ((v, r) => (["0m", "6m", "12m"].indexOf(
-                        r.embargo_hum_soc) >= 0))
-                  : ((v, r) => (["0m", "6m"].indexOf(
-                        r.embargo_sci_tech_med) >= 0))),
+        ),
         guidelines: 3.14,
         gmga: "29.2.2.b",
     },
