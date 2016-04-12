@@ -17,10 +17,12 @@ exports.NEXA_RULES = {
         field_id: 10,
         compliantValues: (v, r) => (
           (["acceptance", "publication"].indexOf(v) >= 0)
-            ? true
+            ? 1.0
             : (v === "embargo" &&
                   ["0m", "6m", "12m"].indexOf(r.embargo_hum_soc) >= 0 &&
                   ["0m", "6m"].indexOf(r.embargo_sci_tech_med) >= 0)
+              ? 2.0
+              : false
         ),
         guidelines: 3.14,
         gmga: "29.2.2.b",
@@ -95,7 +97,13 @@ exports.NEXA_RULES = {
     maximal_embargo_waivable: {
         meg_id: 11,
         field_id: 17,
-        compliantValues: ["no", "not_specified"],
+        compliantValues: (v) => (
+          (["no", "not_specified"].indexOf(v) >= 0)
+            ? true
+            : (v === "yes")
+              ? 0.25
+              : false
+        ),
         guidelines: 3.14,
         gmga: "29.2.2.b",
     },
@@ -103,7 +111,13 @@ exports.NEXA_RULES = {
     waive_open_access: {
         meg_id: 12,
         field_id: 9,
-        compliantValues: "no",
+        compliantValues: (v) => (
+          (v === "no")
+            ? 0.75
+            : (v === "yes")
+              ? 0.25
+              : false
+        ),
         gmga: ["29.1.1", "29.1.2"],
     },
 
