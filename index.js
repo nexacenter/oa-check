@@ -240,6 +240,24 @@ function doListen() {
     runServer(getFunc, searchFunc);
 }
 
+function doTest() {
+    function simplify(x) {
+        var r = {};
+        for (var i = 0; i < x.length; ++i) {
+            r[x[i].field_id] = x[i].is_compliant;
+        }
+        return r;
+    }
+    var records = JSON.parse(fs.readFileSync("roarmap-dump.json", "utf8"));
+    var map = {};
+    for (var i = 0; i < records.length; ++i) {
+        var record = records[i];
+        map[record.eprintid] = simplify(applyRules(roarmapRules, record));
+    }
+    fs.writeFileSync("test-vector.json.new",
+            JSON.stringify(map, undefined, 4), "utf-8");
+}
+
 function doUpdate() {
     kvCache.del({}, function (error) {
         if (error) throw error;
@@ -259,11 +277,14 @@ program
     .version("0.0.1")
     .option("-c, --cache", "Use cache instead of sending requests to roarmap")
     .option("-l, --listen", "Start local web server")
+    .option("-t, --test", "Produce test vector from roarmap-dump.json")
     .option("-u, --update", "Update cache from file name roarmap-dump.json")
     .parse(process.argv);
 
 if (program.listen) {
     doListen();
+} else if (program.test) {
+    doTest();
 } else if (program.update) {
     doUpdate();
 } else {
