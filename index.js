@@ -128,7 +128,8 @@ function applyRules(rules, record) {
             field_id: rule.field_id,
             field: key,
             value: (() => (rule.normalize && rule.normalize(value)))() || value,
-            is_compliant: compliantRec.value,
+            is_compliant: (compliantRec.value >= 0.5),
+            is_compliant_float: compliantRec.value,
             guidelines: rule.guidelines,
             gmga: rule.gmga,
             is_compliant_expr: (
