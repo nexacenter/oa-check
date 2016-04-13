@@ -143,8 +143,25 @@ function search(terms, cb) {
     });
 }
 
-jQuery("load", function () {
-    jQuery("#search").click(function () {
-        search(jQuery("#search-terms").val(), drawSearchResult);
+function getVersion() {
+    jQuery.get({
+        url: "/api/version",
+        success: function (result) {
+            if (result.version === "0.0.1") {
+                jQuery("#search").click(function () {
+                    search(jQuery("#search-terms").val(), drawSearchResult);
+                });
+            } else {
+                jQuery("#search-result").text("unsupported version");
+            }
+        },
+        error: function (_, s, e) {
+            jQuery("#search-result").html("<p>Failure: type=" + escapeHtml(s)
+                + ": reason=" + escapeHtml(e) + "</p>");
+        },
     });
+}
+
+jQuery("load", function () {
+    getVersion();
 });

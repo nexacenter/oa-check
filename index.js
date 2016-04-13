@@ -200,6 +200,14 @@ function runServer (getFunc, searchFunc) {
             return;
         }
 
+        if (request.url === "/api/version") {
+            response.writeHead(200, {
+                "Content-Type": "application/json"
+            });
+            response.end(JSON.stringify({version: "0.0.1"}));
+            return;
+        }
+
         var realpath;
         if (request.url === "/") {
             realpath = "static/app.html";
