@@ -66,7 +66,7 @@ const availableApis = (_, res) => {
         "/id/eprint/[0-9]+": "Forwards entity query for ID to eprints",
         "/cgi/search/simple": "Forwards search query to eprints",
     });
-}
+};
 
 // Robustness model: process requests using a child process and
 // respawn it in the event that it dies
