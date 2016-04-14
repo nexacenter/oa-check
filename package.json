@@ -21,6 +21,7 @@
     "node": "5.x"
   },
   "devDependencies": {
+    "js-beautify": "^1.6.2",
     "jshint": "^2.9.1"
   }
 }
