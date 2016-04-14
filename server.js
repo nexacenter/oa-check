@@ -38,7 +38,7 @@ program
     .parse(process.argv);
 
 if (program.dump) {
-    scrape((err, data) => {
+    scrape.scrape((err, data) => {
         if (err) {
             console.log(err);
             return;
