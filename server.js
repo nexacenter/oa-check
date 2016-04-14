@@ -97,7 +97,11 @@ app.get("/api/v1/institutions", (_, res) => {
     });
 });
 
-app.get("/api/version", (_, res) => { res.json({version: 1}); });
+app.get("/api/version", (_, res) => {
+    res.json({
+        version: 1
+    });
+});
 app.use(express.static(`${__dirname}/static`));
 
 // Before listening attempt once to fetch the institutions such that in
