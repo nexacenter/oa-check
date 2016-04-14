@@ -3,6 +3,7 @@
 
 "use strict";
 
+const cluster = require("cluster");
 const express = require("express");
 const program = require("commander");
 const scrape = require("./lib/scrape");
@@ -59,6 +60,21 @@ const availableApis = (_, res) => {
         "/api/institutions": "Scrape and return all roarmap institutions",
         "/api/version": "Returns API version",
     });
+}
+
+// Robustness model: process requests using a child process and
+// respawn it in the event that it dies
+if (cluster.isMaster) {
+    console.log("forking worker process");
+    cluster.fork();
+    cluster.on("exit", (worker, code, signal) => {
+        console.log("worker process died");
+        setTimeout(() => {
+            console.log("forking worker process");
+            cluster.fork();
+        }, 1000);
+    });
+    return;
 }
 
 const app = express();
