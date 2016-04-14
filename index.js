@@ -117,8 +117,8 @@ function runServer (getFunc, searchFunc) {
         var realpath;
         if (request.url === "/") {
             realpath = "static/app.html";
-        } else if (request.url === "/app.js") {
-            realpath = "static/app.js";
+        } else if (request.url === "/app.bundle.js") {
+            realpath = "static/app.bundle.js";
         } else if (request.url === "/app.css") {
             realpath = "static/app.css";
         } else if (request.url === "/details.html") {
