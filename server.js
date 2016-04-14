@@ -5,6 +5,7 @@
 
 const cluster = require("cluster");
 const express = require("express");
+const legacy = require("./lib/legacy");
 const program = require("commander");
 const scrape = require("./lib/scrape");
 const test = require("./lib/test");
@@ -59,6 +60,8 @@ const availableApis = (_, res) => {
         "/api/": "Same as '/api'",
         "/api/v1/institutions": "Scrape and return all roarmap institutions",
         "/api/version": "Returns API version",
+        "/id/eprint/[0-9]+": "Forwards entity query for ID to eprints",
+        "/cgi/search/simple": "Forwards search query to eprints",
     });
 }
 
@@ -82,6 +85,8 @@ app.get("/api", availableApis);
 app.get("/api/", availableApis);
 app.get("/api/v1/institutions", getInstitutions);
 app.get("/api/version", (_, res) => { res.json({version: 1}); });
+app.get(/^\/id\/eprint\/[0-9]+$/, legacy.forward);
+app.get(/^\/cgi\/search\/simple$/, legacy.forward);
 app.use(express.static(`${__dirname}/static`));
 app.listen(process.env.PORT || 8080, () => {
     console.log("web application started");
