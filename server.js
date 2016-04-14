@@ -3,12 +3,11 @@
 
 "use strict";
 
-const basedir = `${__dirname}/..`;
+const basedir = `${__dirname}`;
 const express = require("express");
 const fs = require("fs");
 const jquery = `file:///${basedir}/node_modules/jquery/dist/jquery.min.js`;
 const jsdom = require("jsdom");
-const outFile = `${basedir}/roarmap-dump.json`;
 const prefix = "https://roarmap.eprints.org/cgi/search/advanced";
 const program = require("commander");
 const request = require("request");
@@ -138,25 +137,37 @@ const getInstitutions = exports.getInstitutions = (_, res) => {
 };
 
 program
-    .version("0.0.2")
-    .option("-l, --listen", "Start local web server")
+    .version("0.0.3")
+    .option("-d, --dump", "Scrape roarmaps database and dump it to stdout")
     .parse(process.argv);
 
-if (program.listen) {
-    const app = express();
-    app.get("/api/institutions", getInstitutions);
-    app.get("/api/version", (_, res) => { res.json({version: "0.0.2"}); });
-    app.use(express.static(`${basedir}/static`));
-    app.listen(process.env.PORT || 8080, () => {
-        console.log("web application started");
+if (program.dump) {
+    scrape((err, data) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        console.log("Dump follows:\n\n");
+        console.log(data);
     });
     return;
 }
 
-scrape((err, data) => {
-    if (err) {
-        console.log(err);
-        return;
-    }
-    fs.writeFileSync(outFile, data, "utf-8");
+const availableApis = (_, res) => {
+    res.json({
+        "/api": "Return this list of APIs",
+        "/api/": "Same as '/api'",
+        "/api/institutions": "Scrape and return all roarmap institutions",
+        "/api/version": "Returns API version",
+    });
+}
+
+const app = express();
+app.get("/api", availableApis);
+app.get("/api/", availableApis);
+app.get("/api/institutions", getInstitutions);
+app.get("/api/version", (_, res) => { res.json({version: "0.0.2"}); });
+app.use(express.static(`${basedir}/static`));
+app.listen(process.env.PORT || 8080, () => {
+    console.log("web application started");
 });
