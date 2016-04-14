@@ -12,7 +12,7 @@ var fs = require("fs"),
     kvHostName = 'roarmap.eprints.org',
     kvPort = process.env.PORT || 8080;
 
-const applyRules = require("./roarmap-rules").applyRules;
+const applyRules = require("./lib/rules").applyRules;
 
 function callEprints(path, callback) {
     var request = http.request({
