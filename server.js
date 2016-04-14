@@ -5,7 +5,6 @@
 
 const cluster = require("cluster");
 const express = require("express");
-const legacy = require("./lib/server/legacy");
 const program = require("commander");
 const scrape = require("./lib/server/scrape");
 const test = require("./lib/server/test");
@@ -99,8 +98,6 @@ app.get("/api/v1/institutions", (_, res) => {
 });
 
 app.get("/api/version", (_, res) => { res.json({version: 1}); });
-app.get(/^\/id\/eprint\/[0-9]+$/, legacy.forward);
-app.get(/^\/cgi\/search\/simple$/, legacy.forward);
 app.use(express.static(`${__dirname}/static`));
 
 // Before listening attempt once to fetch the institutions such that in
