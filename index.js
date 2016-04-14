@@ -13,6 +13,8 @@ var fs = require("fs"),
     kvHostName = 'roarmap.eprints.org',
     kvPort = process.env.PORT || 8080;
 
+const applyRules = require("./roarmap-rules").applyRules;
+
 function callEprints(path, callback) {
     var request = http.request({
         hostname: kvHostName,
@@ -100,53 +102,6 @@ function searchObject(pattern, callback) {
         }
         callback(undefined, uris);
     });
-}
-
-function evaluateRule(rule, record, key, value) {
-    var compliantValues = rule.compliantValues,
-        initialExpr = compliantValues;
-    var compliant = ((typeof compliantValues === "string" &&
-                      value === compliantValues) ||
-                     (compliantValues instanceof Array &&
-                      compliantValues.indexOf(value) >= 0) ||
-                     (compliantValues instanceof Function &&
-                      compliantValues(value, record, key)));
-    return {
-        clause: compliantValues,
-        expr: initialExpr,
-        fuzzyLabel: (rule.fuzzyLabels && rule.fuzzyLabels[compliant]),
-        value: compliant
-    };
-}
-
-function applyRules(rules, record) {
-    var newRecord = [];
-    Object.keys(rules).forEach(function (key) {
-        var rule = rules[key],
-            value = record[key],
-            compliantRec = evaluateRule(rule, record, key, value);
-        newRecord.push({
-            field_id: rule.field_id,
-            field: key,
-            value: (() => (rule.normalize && rule.normalize(value)))() || value,
-            is_compliant: (compliantRec.value >= 0.5),
-            is_compliant_float: compliantRec.value,
-            guidelines: rule.guidelines,
-            gmga: rule.gmga,
-            is_compliant_expr: (
-                (compliantRec.expr instanceof Function &&
-                 compliantRec.expr.toString()) ||
-                JSON.stringify(compliantRec.expr)),
-            specific_clause: (
-                (compliantRec.clause instanceof Function &&
-                 compliantRec.clause.toString()) ||
-                JSON.stringify(compliantRec.clause)),
-            normalize_expr: (
-                (rule.normalize && rule.normalize.toString()) || undefined),
-            fuzzy_label: compliantRec.fuzzyLabel,
-        });
-    });
-    return newRecord;
 }
 
 function processError(error, response) {
