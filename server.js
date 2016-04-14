@@ -13,21 +13,25 @@ const test = require("./lib/server/test");
 // Returns all roarmap institutions as JSON
 let latestCheck = 0;
 let cache = {};
-const getInstitutions = exports.getInstitutions = (_, res) => {
+const checkInterval = 900000;
+const getInstitutions = (callback) => {
     const now = new Date().getTime();
-    if (now - latestCheck < 15000) {
-        res.json(cache);
+    if (now - latestCheck < checkInterval) {
+        callback(null, cache);
         return;
     }
+    // Note: since the request takes around ten seconds, immediately
+    // update `latestCheck` otherwise all requests arriving into this
+    // time frame when we are updating will trigger other updates
+    latestCheck = now;
     scrape.scrape((err, d) => {
         if (err) {
             console.log(err);
-            res.status(500).send("Internal server error");
+            callback(err);
             return;
         }
-        latestCheck = now;
         cache = d;
-        res.json(d);
+        callback(null, cache);
     });
 };
 
@@ -75,7 +79,7 @@ if (cluster.isMaster) {
         setTimeout(() => {
             console.log("forking worker process");
             cluster.fork();
-        }, 1000);
+        }, 15000);
     });
     return;
 }
@@ -83,11 +87,28 @@ if (cluster.isMaster) {
 const app = express();
 app.get("/api", availableApis);
 app.get("/api/", availableApis);
-app.get("/api/v1/institutions", getInstitutions);
+
+app.get("/api/v1/institutions", (_, res) => {
+    getInstitutions((err, d) => {
+        if (err) {
+            res.status(500).send("Internal server error");
+            return;
+        }
+        res.json(d);
+    });
+});
+
 app.get("/api/version", (_, res) => { res.json({version: 1}); });
 app.get(/^\/id\/eprint\/[0-9]+$/, legacy.forward);
 app.get(/^\/cgi\/search\/simple$/, legacy.forward);
 app.use(express.static(`${__dirname}/static`));
-app.listen(process.env.PORT || 8080, () => {
-    console.log("web application started");
+
+// Before listening attempt once to fetch the institutions such that in
+// the common case we start serving when we have good institutions.
+// XXX This algorithm could of course become smarter than it is now...
+getInstitutions((error) => {
+    console.log("error when getting institutions?", error);
+    app.listen(process.env.PORT || 8080, () => {
+        console.log("web application started");
+    });
 });
