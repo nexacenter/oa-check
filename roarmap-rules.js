@@ -4,7 +4,7 @@
 "use strict";
 
 // Rules to evaluate compliancy according to Nexa Center
-exports.NEXA_RULES = {
+const NEXA_RULES = {
     can_deposit_be_waived: {
         meg_id: 1,
         field_id: 7,
@@ -153,7 +153,7 @@ exports.NEXA_RULES = {
     },
 };
 
-const evaluateRule = exports.evaluateRule = (rule, record, key, value) => {
+const evaluateRule = (rule, record, key, value) => {
     var compliantValues = rule.compliantValues,
         initialExpr = compliantValues;
     var compliant = ((typeof compliantValues === "string" &&
@@ -170,7 +170,8 @@ const evaluateRule = exports.evaluateRule = (rule, record, key, value) => {
     };
 }
 
-const applyRules = exports.applyRules = (rules, record) => {
+const applyRules = exports.applyRules = (record) => {
+    const rules = NEXA_RULES;
     var newRecord = [];
     Object.keys(rules).forEach(function (key) {
         var rule = rules[key],

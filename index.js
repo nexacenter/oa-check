@@ -8,7 +8,6 @@ var fs = require("fs"),
     level = require("level-browserify"),
     levelgraph = require("levelgraph"),
     program = require("commander"),
-    roarmapRules = require("./roarmap-rules").NEXA_RULES,
     kvCache = levelgraph(level("cache")),
     kvHostName = 'roarmap.eprints.org',
     kvPort = process.env.PORT || 8080;
@@ -131,7 +130,7 @@ function runServer (getFunc, searchFunc) {
                     processError(error, response);
                     return;
                 }
-                record.compliance = applyRules(roarmapRules, record);
+                record.compliance = applyRules(record);
                 response.writeHead(200, {
                     "Content-Type": "application/json"
                 });
@@ -209,7 +208,7 @@ function doTest() {
     var map = {};
     for (var i = 0; i < records.length; ++i) {
         var record = records[i];
-        map[record.eprintid] = simplify(applyRules(roarmapRules, record));
+        map[record.eprintid] = simplify(applyRules(record));
     }
     fs.writeFileSync("test-vector.json.new",
             JSON.stringify(map, undefined, 4), "utf-8");
