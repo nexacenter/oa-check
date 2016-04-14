@@ -9,7 +9,7 @@ var fs = require("fs"),
     kvHostName = 'roarmap.eprints.org',
     kvPort = process.env.PORT || 8080;
 
-const applyRules = require("./lib/rules").applyRules;
+const applyRules = require("./lib/rules").apply;
 
 function callEprints(path, callback) {
     var request = http.request({
@@ -82,7 +82,6 @@ function runServer (getFunc, searchFunc) {
                     processError(error, response);
                     return;
                 }
-                record.compliance = applyRules(record);
                 response.writeHead(200, {
                     "Content-Type": "application/json"
                 });
