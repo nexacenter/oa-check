@@ -3,8 +3,10 @@
 
 "use strict";
 
-var fs = require("fs"),
-    http = require("http"),
+const express = require("express");
+const app = express();
+
+var http = require("http"),
     program = require("commander"),
     kvHostName = 'roarmap.eprints.org',
     kvPort = process.env.PORT || 8080;
@@ -66,83 +68,40 @@ function processError(error, response) {
     }
 }
 
-/// Run the API server.
-/// \param getFunc Function used to get record by id.
-/// \param searchFunc Function used to search by name.
-/// \param fules Rules to evaluate compliance.
-function runServer (getFunc, searchFunc) {
-    http.createServer(function (request, response) {
+function runServer() {
+    app.get(/^\/id\/eprint\/[0-9]+$/, (req, res) => {
+        callEprints(req.url, function (error, record) {
+            if (error) {
+                console.log("getFunc error:", error);
+                processError(error, res);
+                return;
+            }
+            res.json(record);
+        });
+    });
 
-        if (request.url.match(/^\/id\/eprint\/[0-9]+$/)) {
-            getFunc(request.url, function (error, record) {
-                if (error) {
-                    console.log("getFunc error:", error);
-                    processError(error, response);
-                    return;
-                }
-                response.writeHead(200, {
-                    "Content-Type": "application/json"
-                });
-                response.end(JSON.stringify(record));
-            });
-            return;
-        }
+    app.get(/^\/cgi\/search\/simple$/, (req, res) => {
+        callEprints(req.url, function (error, record) {
+            if (error) {
+                console.log("searchFunc error:", error);
+                processError(error, res);
+                return;
+            }
+            res.json(record);
+        });
+    });
 
-        if (request.url.match(/^\/cgi\/search\/simple\?output=JSON&q=.*$/)) {
-            searchFunc(request.url, function (error, record) {
-                if (error) {
-                    console.log("searchFunc error:", error);
-                    processError(error, response);
-                    return;
-                }
-                response.writeHead(200, {
-                    "Content-Type": "application/json"
-                });
-                response.end(JSON.stringify(record));
-            });
-            return;
-        }
+    app.get("/api/version", (_, res) => (res.json({version: "0.0.1"})));
 
-        if (request.url === "/api/version") {
-            response.writeHead(200, {
-                "Content-Type": "application/json"
-            });
-            response.end(JSON.stringify({version: "0.0.1"}));
-            return;
-        }
+    app.use(express.static(`${__dirname}/static`));
 
-        var realpath;
-        if (request.url === "/") {
-            realpath = "static/app.html";
-        } else if (request.url === "/app.bundle.js") {
-            realpath = "static/app.bundle.js";
-        } else if (request.url === "/app.css") {
-            realpath = "static/app.css";
-        } else if (request.url === "/details.html") {
-            realpath = "static/details.html";
-        }
-
-        if (realpath) {
-            var stream = fs.createReadStream(realpath);
-            stream.on("error", function (error) {
-                console.log("stream error:", error);
-                response.end();
-            });
-            stream.pipe(response);
-        } else {
-            response.writeHead(404);
-            response.end("Not Found\n");
-        }
-
-    }).listen(kvPort, function () {
+    app.listen(kvPort, function () {
         console.log("server listening on port", kvPort);
     });
 }
 
 function doListen() {
-    var getFunc = callEprints;
-    var searchFunc = callEprints;
-    runServer(getFunc, searchFunc);
+    runServer();
 }
 
 program
