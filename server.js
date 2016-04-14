@@ -5,10 +5,10 @@
 
 const cluster = require("cluster");
 const express = require("express");
-const legacy = require("./lib/legacy");
+const legacy = require("./lib/server/legacy");
 const program = require("commander");
-const scrape = require("./lib/scrape");
-const test = require("./lib/test");
+const scrape = require("./lib/server/scrape");
+const test = require("./lib/server/test");
 
 // Returns all roarmap institutions as JSON
 let latestCheck = 0;
