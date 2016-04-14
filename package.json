@@ -4,7 +4,7 @@
   "description": "View roarmap policies",
   "main": "index.js",
   "scripts": {
-    "prestart": "./node_modules/.bin/browserify ./lib/rules.js ./node_modules/jquery/dist/jquery.min.js ./lib/app.js -o static/app.bundle.js",
+    "prestart": "./node_modules/.bin/browserify ./lib/common/rules.js ./lib/client/app.js -o static/app.bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": "https://github.com/bassosimone/roarmap-view",
