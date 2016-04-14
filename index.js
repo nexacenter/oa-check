@@ -5,10 +5,7 @@
 
 var fs = require("fs"),
     http = require("http"),
-    level = require("level-browserify"),
-    levelgraph = require("levelgraph"),
     program = require("commander"),
-    kvCache = levelgraph(level("cache")),
     kvHostName = 'roarmap.eprints.org',
     kvPort = process.env.PORT || 8080;
 
@@ -56,51 +53,6 @@ function callEprints(path, callback) {
         callback(error);
     });
     request.end();
-}
-
-function triplesToObject(triples) {
-    var object = {};
-    if (triples.length > 0) {
-        object.uri = triples[0].subject;
-        for (var i = 0; i < triples.length; ++i) {
-            object[triples[i].predicate] = triples[i].object;
-        }
-    }
-    return object;
-}
-
-function getObject(path, callback) {
-    var uri = "http://roarmap.eprints.org" + path;
-    kvCache.get({subject: uri}, function (error, triples) {
-        if (error) {
-            callback(error);
-            return;
-        }
-        callback(undefined, triplesToObject(triples));
-    });
-}
-
-function searchObject(pattern, callback) {
-    pattern = pattern.replace("/cgi/search/simple?output=JSON&q=", "");
-    pattern = pattern.toLowerCase();
-    kvCache.search([{
-        subject: kvCache.v("uri"),
-        predicate: "title",
-        object: kvCache.v("title")
-    }, {
-        subject: kvCache.v("uri"),
-        predicate: "eprintid",
-        object: kvCache.v("eprintid")
-    }], function (error, triples) {
-        // XXX: Is there a more efficient way than the following?
-        var uris = [];
-        for (var i = 0; i < triples.length; ++i) {
-            if (triples[i].title.toLowerCase().indexOf(pattern) >= 0) {
-                uris.push(triples[i]);
-            }
-        }
-        callback(undefined, uris);
-    });
 }
 
 function processError(error, response) {
@@ -191,8 +143,8 @@ function runServer (getFunc, searchFunc) {
 }
 
 function doListen() {
-    var getFunc = (program.cache) ? getObject : callEprints;
-    var searchFunc = (program.cache) ? searchObject : callEprints;
+    var getFunc = callEprints;
+    var searchFunc = callEprints;
     runServer(getFunc, searchFunc);
 }
 
@@ -214,35 +166,16 @@ function doTest() {
             JSON.stringify(map, undefined, 4), "utf-8");
 }
 
-function doUpdate() {
-    kvCache.del({}, function (error) {
-        if (error) throw error;
-        var all = JSON.parse(fs.readFileSync("roarmap-dump.json", "utf8"));
-        for (var i = 0; i < all.length; ++i) {
-            Object.keys(all[i]).forEach(function (key) {
-                if (key !== "uri") {
-                    kvCache.put({subject: all[i].uri, predicate: key,
-                                 object: all[i][key]});
-                }
-            });
-        }
-    });
-}
-
 program
     .version("0.0.1")
-    .option("-c, --cache", "Use cache instead of sending requests to roarmap")
     .option("-l, --listen", "Start local web server")
     .option("-t, --test", "Produce test vector from roarmap-dump.json")
-    .option("-u, --update", "Update cache from file name roarmap-dump.json")
     .parse(process.argv);
 
 if (program.listen) {
     doListen();
 } else if (program.test) {
     doTest();
-} else if (program.update) {
-    doUpdate();
 } else {
     program.help();
 }

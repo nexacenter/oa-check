@@ -11,11 +11,11 @@
   "author": "Simone Basso",
   "license": "MIT",
   "dependencies": {
+    "browserify": "^13.0.0",
     "commander": "^2.9.0",
+    "express": "^4.13.4",
     "jquery": "^2.2.3",
-    "jsdom": "^8.3.1",
-    "level-browserify": "^1.1.0",
-    "levelgraph": "^1.1.0"
+    "jsdom": "^8.3.1"
   },
   "engines": {
     "node": "5.x"
