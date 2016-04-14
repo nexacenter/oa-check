@@ -25,28 +25,8 @@ view ROARMAP H2020 compliancy. Type `^C` to stop the webserver.
 ## Download all ROARMAP data in JSON format
 
 ```
-phantomjs scrape.js
+node server.js -d
 ```
 
-This scrapes ROARMAP website to download all data in JSON format. The
-resulting file is named `roarmap-dump.json`.
-
-## Create graphdb using ROARMAP dump
-
-```
-node index.js -u
-```
-
-This creates a [LevelGraph](https://github.com/mcollina/levelgraph)-based
-database in the `cache/` directory containing triples derived from ROARMAP
-data expressed in JSON format inside of `roarmap-dump.json`.
-
-## Use graphdb rather than using ROARMAP API
-
-```
-node index -lc
-```
-
-This uses for all operations the local graphdb rather than the remote API
-exported by ROARMAP. This is more suitable for offline demos as well as for
-running bulk analyses over the whole dataset of ROARMAP.
+This scrapes ROARMAP website to download all data in JSON format and
+prints the resulting JSON document on the standard output.
