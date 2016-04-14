@@ -6,6 +6,7 @@
 const express = require("express");
 const program = require("commander");
 const scrape = require("./lib/scrape");
+const test = require("./lib/test");
 
 // Returns all roarmap institutions as JSON
 let latestCheck = 0;
@@ -31,6 +32,7 @@ const getInstitutions = exports.getInstitutions = (_, res) => {
 program
     .version("0.0.4")
     .option("-d, --dump", "Scrape roarmaps database and dump it to stdout")
+    .option("-t, --test", "Self test scraper and rules")
     .parse(process.argv);
 
 if (program.dump) {
@@ -42,6 +44,11 @@ if (program.dump) {
         console.log("Dump follows:\n\n");
         console.log(data);
     });
+    return;
+}
+
+if (program.test) {
+    test.test();
     return;
 }
 

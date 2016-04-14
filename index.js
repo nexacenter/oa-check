@@ -9,8 +9,6 @@ var fs = require("fs"),
     kvHostName = 'roarmap.eprints.org',
     kvPort = process.env.PORT || 8080;
 
-const applyRules = require("./lib/rules").apply;
-
 function callEprints(path, callback) {
     var request = http.request({
         hostname: kvHostName,
@@ -147,34 +145,13 @@ function doListen() {
     runServer(getFunc, searchFunc);
 }
 
-function doTest() {
-    function simplify(x) {
-        var r = {};
-        for (var i = 0; i < x.length; ++i) {
-            r[x[i].field_id] = x[i].is_compliant;
-        }
-        return r;
-    }
-    var records = JSON.parse(fs.readFileSync("roarmap-dump.json", "utf8"));
-    var map = {};
-    for (var i = 0; i < records.length; ++i) {
-        var record = records[i];
-        map[record.eprintid] = simplify(applyRules(record));
-    }
-    fs.writeFileSync("test-vector.json.new",
-            JSON.stringify(map, undefined, 4), "utf-8");
-}
-
 program
     .version("0.0.1")
     .option("-l, --listen", "Start local web server")
-    .option("-t, --test", "Produce test vector from roarmap-dump.json")
     .parse(process.argv);
 
 if (program.listen) {
     doListen();
-} else if (program.test) {
-    doTest();
 } else {
     program.help();
 }
