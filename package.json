@@ -11,6 +11,7 @@
   "author": "Simone Basso",
   "license": "MIT",
   "dependencies": {
+    "angular": "^1.5.3",
     "browserify": "^13.0.0",
     "commander": "^2.9.0",
     "express": "^4.13.4",

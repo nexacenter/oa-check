@@ -5,7 +5,7 @@
     <title>Frontend to roarmap.eprints.org</title>
     <link rel="stylesheet" type="text/css" href="app.css">
   </head>
-  <body>
+  <body ng-app="roarmap-h2020-view">
     <center>
       <form>
         <input type="text" id="search-terms">
@@ -13,6 +13,17 @@
       </form>
       <div id="search-result"></div>
       <div id="university"></div>
+
+      <div ng-controller="MainController">
+<!-- Not yet!
+        <form ng-submit="search">
+          <input type="text" ng-model="search_terms">
+          <button>Search</button>
+        </form>
+-->
+        <p>{{state}}</p>
+      </div>
+
     </center>
     <script src="app.bundle.js"></script>
   </body>
