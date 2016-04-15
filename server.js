@@ -108,7 +108,10 @@ app.use(express.static(`${__dirname}/static`));
 // the common case we start serving when we have good institutions.
 // XXX This algorithm could of course become smarter than it is now...
 getInstitutions((error) => {
-    console.log("error when getting institutions?", error);
+    if (error) {
+        console.log("error when getting institutions:", error);
+        // fallthrough
+    }
     app.listen(process.env.PORT || 8080, () => {
         console.log("web application started");
     });
