@@ -7,20 +7,14 @@
   </head>
   <body ng-app="roarmap-h2020-view">
     <center>
-      <form>
-        <input type="text" id="search-terms">
-        <a href="#" id="search">Search</a>
-      </form>
       <div id="search-result"></div>
       <div id="university"></div>
 
       <div ng-controller="MainController">
-<!-- Not yet!
-        <form ng-submit="search">
+        <form ng-submit="search()">
           <input type="text" ng-model="search_terms">
           <button>Search</button>
         </form>
--->
         <p>{{state}}</p>
       </div>
 
