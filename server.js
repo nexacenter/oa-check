@@ -4,33 +4,18 @@
 "use strict";
 
 const cluster = require("cluster");
+const database = require("./lib/server/database");
 const express = require("express");
 const program = require("commander");
-const scrape = require("./lib/server/scrape");
 const test = require("./lib/server/test");
 
-// Returns all roarmap institutions as JSON
-let latestCheck = 0;
-let cache = {};
-const checkInterval = 900000;
 const getInstitutions = (callback) => {
-    const now = new Date().getTime();
-    if (now - latestCheck < checkInterval) {
-        callback(null, cache);
-        return;
-    }
-    // Note: since the request takes around ten seconds, immediately
-    // update `latestCheck` otherwise all requests arriving into this
-    // time frame when we are updating will trigger other updates
-    latestCheck = now;
-    scrape.scrape((err, d) => {
+    database.query((err, data) => {
         if (err) {
-            console.log(err);
             callback(err);
             return;
         }
-        cache = d;
-        callback(null, cache);
+        callback(null, data);
     });
 };
 
@@ -41,7 +26,7 @@ program
     .parse(process.argv);
 
 if (program.dump) {
-    scrape.scrape((err, data) => {
+    database.query((err, data) => {
         if (err) {
             console.log(err);
             return;
