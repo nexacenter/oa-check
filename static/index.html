@@ -6,54 +6,7 @@
     <link rel="stylesheet" type="text/css" href="app.css">
   </head>
   <body ng-app="roarmap-h2020-view">
-
-    <div ng-controller="MainController">
-
-      <div style='width: 40%; float: left'>
-        <form ng-submit="search()">
-          <input type="text" ng-model="g.search.terms">
-          <button>Search</button>
-        </form>
-        <div ng-show="g.search.result">
-          <ol>
-            <li ng-repeat="entry in g.search.result">
-              <a href="#" ng-click="show(entry)">{{entry.title}}</a>
-            </li>
-          </ol>
-        </div>
-      </div>
-
-      <div ng-show="g.selected" style="float: left">
-
-        <p>[<a href="">#</a>] <b>{{g.selected.title}}</b><br />
-          ({{g.selected.policymaker_type}})<br />
-          Last Modified: {{g.selected.lastmod}}<br />
-
-          (<a href="{{g.selected.uri}}">roarmap url</a>)
-          (<a href="{{g.selected.policymaker_url}}">policy maker url</a>)
-          (<a href="{{g.selected.repository_url}}">repository url</a>)
-          (<a href="{{g.selected.policy_url}}">policy url</a>)</p>
-
-        <ul>
-          <li>compliance: {{g.selected.percentage|number:2}}%</li>
-          <li>compliant with:
-            <ul>
-              <li ng-repeat="entry in g.selected.nexa | filter : { is_compliant: true }">
-                {{entry.field}}
-              </li>
-            </ul>
-          </li>
-          <li>not compliant with:
-            <ul>
-              <li ng-repeat="entry in g.selected.nexa | filter : { is_compliant: false }">
-                {{entry.field}}
-              </li>
-            </ul>
-          </li>
-        </ul>
-
-      </div>
-    </div>
+    <div ng-view></div>
     <script src="app.bundle.js"></script>
   </body>
 </html>
