@@ -12,10 +12,15 @@
 
       <div ng-controller="MainController">
         <form ng-submit="search()">
-          <input type="text" ng-model="search_terms">
+          <input type="text" ng-model="g.search.terms">
           <button>Search</button>
         </form>
-        <p>{{state}}</p>
+        <div ng-show="g.search.result">
+          <ul ng-repeat="entry in g.search.result">
+            <li><a href="#" ng-click="show(entry)">{{entry.title}}</a></li>
+          </ul>
+        </div>
+        <p>{{g.state}}</p>
       </div>
 
     </center>
