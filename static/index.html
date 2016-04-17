@@ -6,42 +6,54 @@
     <link rel="stylesheet" type="text/css" href="app.css">
   </head>
   <body ng-app="roarmap-h2020-view">
-    <center>
-      <div id="search-result"></div>
-      <div id="university"></div>
-    </center>
 
     <div ng-controller="MainController">
 
-      <form ng-submit="search()">
-        <input type="text" ng-model="g.search.terms">
-        <button>Search</button>
-      </form>
-
-      <div style='width: 100%'>
-        <div ng-show="g.search.result" style='float: left; width: 25%'>
-          <ul ng-repeat="entry in g.search.result">
-            <li>
+      <div style='width: 40%; float: left'>
+        <form ng-submit="search()">
+          <input type="text" ng-model="g.search.terms">
+          <button>Search</button>
+        </form>
+        <div ng-show="g.search.result">
+          <ol>
+            <li ng-repeat="entry in g.search.result">
               <a href="#" ng-click="show(entry)">{{entry.title}}</a>
             </li>
-          </ul>
-        </div>
-
-        <div ng-show="g.selected" style='float: right; width: 66%'>
-          <table>
-            <tr ng-repeat="field in g.selected|limitTo:1">
-              <th ng-repeat="(key, value) in field">{{key}}</th>
-            </td>
-            <tr ng-repeat="field in g.selected">
-              <td ng-repeat="(key, value) in field">{{value}}</td>
-            </tr>
-          </table>
+          </ol>
         </div>
       </div>
 
-      <div style="float: bottom; position: absolute">{{g.state}}</div>
-    </div>
+      <div ng-show="g.selected" style="float: left">
 
+        <p>[<a href="">#</a>] <b>{{g.selected.title}}</b><br />
+          ({{g.selected.policymaker_type}})<br />
+          Last Modified: {{g.selected.lastmod}}<br />
+
+          (<a href="{{g.selected.uri}}">roarmap url</a>)
+          (<a href="{{g.selected.policymaker_url}}">policy maker url</a>)
+          (<a href="{{g.selected.repository_url}}">repository url</a>)
+          (<a href="{{g.selected.policy_url}}">policy url</a>)</p>
+
+        <ul>
+          <li>compliance: {{g.selected.percentage|number:2}}%</li>
+          <li>compliant with:
+            <ul>
+              <li ng-repeat="entry in g.selected.nexa | filter : { is_compliant: true }">
+                {{entry.field}}
+              </li>
+            </ul>
+          </li>
+          <li>not compliant with:
+            <ul>
+              <li ng-repeat="entry in g.selected.nexa | filter : { is_compliant: false }">
+                {{entry.field}}
+              </li>
+            </ul>
+          </li>
+        </ul>
+
+      </div>
+    </div>
     <script src="app.bundle.js"></script>
   </body>
 </html>
