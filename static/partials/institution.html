@@ -1,0 +1,33 @@
+<div ng-controller="InstitutionController">
+
+  <div ng-show="g.selected">
+
+    <p>[<a href="/">&lt;&lt;</a>] <b>{{g.selected.title}}</b>
+      ({{g.selected.policymaker_type}})<br />
+      Last Modified: {{g.selected.lastmod}}<br />
+
+      (<a href="{{g.selected.uri}}">roarmap url</a>)
+      (<a href="{{g.selected.policymaker_url}}">policy maker url</a>)
+      (<a href="{{g.selected.repository_url}}">repository url</a>)
+      (<a href="{{g.selected.policy_url}}">policy url</a>)</p>
+
+    <ul>
+      <li>compliance: {{g.selected.percentage|number:2}}%</li>
+      <li>compliant with:
+        <ul>
+          <li ng-repeat="entry in g.selected.nexa | filter : { is_compliant: true }">
+            {{entry.field}}
+          </li>
+        </ul>
+      </li>
+      <li>not compliant with:
+        <ul>
+          <li ng-repeat="entry in g.selected.nexa | filter : { is_compliant: false }">
+            {{entry.field}}
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+  </div>
+</div>
