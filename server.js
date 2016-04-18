@@ -7,7 +7,7 @@ const cluster = require("cluster");
 const program = require("commander");
 
 program
-    .version("0.0.4")
+    .version("0.2.0")
     .option("-d, --dump", "Scrape roarmaps database and dump it to stdout")
     .option("-t, --test", "Self test scraper and rules")
     .parse(process.argv);
