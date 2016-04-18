@@ -1,7 +1,6 @@
 .DS_Store
-cache/
-node_modules
-npm-debug.log
-roarmap.db
-static/app.bundle.js
-test-vector.json.new
+/node_modules
+/npm-debug.log
+/roarmap.db
+/static/app.bundle.js
+/test-vector.json.new
