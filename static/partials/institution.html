@@ -2,15 +2,20 @@
 
   <div ng-show="g.selected">
 
-    <p><b>{{g.selected.title}}</b>
-      ({{g.selected.policymaker_type}})<br />
-      Last Modified: {{g.selected.lastmod}}<br />
-
-      (<a href="{{g.selected.uri}}">roarmap url</a>)
-      (<a href="{{g.selected.policymaker_url}}">policy maker url</a>)
-      (<a href="{{g.selected.repository_url}}">repository url</a>)
-      (<a href="{{g.selected.policy_url}}">policy url</a>) <br />
-      compliance: {{g.selected.percentage|number:2}}%</p>
+    <div>
+      <div>
+        <span class="policymaker_name">{{g.selected.title}}</span>
+        ({{g.selected.policymaker_type}})
+      </div>
+      <div>Last Modified: {{g.selected.lastmod}}</div>
+      <div>
+        (<a href="{{g.selected.uri}}">roarmap url</a>)
+        (<a href="{{g.selected.policymaker_url}}">policy maker url</a>)
+        (<a href="{{g.selected.repository_url}}">repository url</a>)
+        (<a href="{{g.selected.policy_url}}">policy url</a>)
+      </div>
+      <div>compliance: {{g.selected.percentage|number:2}}%</div>
+    </div>
 
     <table>
       <tr>

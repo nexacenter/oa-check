@@ -18,3 +18,7 @@ tr:hover {
 .compliant-false {
     color: #FF0000
 }
+
+span.policymaker_name {
+    font-weight: bold;
+}
