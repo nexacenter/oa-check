@@ -4,6 +4,11 @@
 "use strict";
 
 const database = require("../../lib/server/database");
+
+describe("database", () => {
+    describe("update_", () => {
+        it("correctly updates the underlying data base", () => {
+
 let basicDocument = {
     foo: 3.14,
     foobar: [1, 2, 3],
@@ -33,4 +38,8 @@ database.update_((err, data) => {
 
 }, (callback) => {
     callback(null, JSON.stringify(basicDocument));
+});
+
+});
+});
 });
