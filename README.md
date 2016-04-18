@@ -7,26 +7,21 @@ the ROARMAP web site and web API.
 You need to have [node](https://nodejs.org) >= 5.x installed. To install
 dependencies and start the local webserver run:
 
-## Install dependencies
-
 ```
 npm install
 ```
 
-## Frontend ROARMAP API
+Then, to start the server, run:
 
 ```
 npm start
 ```
 
 Then browse to [http://127.0.0.1:8080/](http://127.0.0.1:8080/) to
-view ROARMAP H2020 compliancy. Type `^C` to stop the webserver.
+view ROARMAP H2020 compliancy. Type `^C` to stop the server.
 
-## Download all ROARMAP data in JSON format
+To dump roarmap database in JSON format, run:
 
 ```
 node server.js -d
 ```
-
-This scrapes ROARMAP website to download all data in JSON format and
-prints the resulting JSON document on the standard output.
