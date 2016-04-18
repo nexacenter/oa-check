@@ -3,4 +3,4 @@
 /npm-debug.log
 /roarmap.db
 /static/app.bundle.js
-/test-vector.json.new
+/test/fixtures/test-vector.json.new
