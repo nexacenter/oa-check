@@ -23,19 +23,26 @@
         <th>guidelines</th>
         <th>gmga</th>
       </tr>
-      <tr ng-repeat="entry in g.selected.nexa | orderBy:'field_id'">
-        <td class="compliant-{{entry.is_compliant}}">{{entry.field_id}}</td>
-        <td class="compliant-{{entry.is_compliant}}">{{entry.field}}</td>
-        <td class="compliant-{{entry.is_compliant}}">{{entry.value}}</td>
-        <td class="compliant-{{entry.is_compliant}}">{{entry.is_compliant}}</td>
-        <td class="compliant-{{entry.is_compliant}}">{{entry.reason}}</td>
-        <td class="compliant-{{entry.is_compliant}}">{{entry.fuzzy_label}}</td>
-        <td class="compliant-{{entry.is_compliant}}">
+
+      <!-- Note: g.selected.nexa contains evaluation of the H2020 compliance
+           rules developed by Nexa Center -->
+      <tr ng-repeat="entry in g.selected.nexa | orderBy:'field_id'"
+          class="compliant-{{entry.is_compliant}}">
+        <td>{{entry.field_id}}</td>
+        <td>{{entry.field}}</td>
+        <td>{{entry.value}}</td>
+        <td>{{entry.is_compliant}}</td>
+        <td>{{entry.reason}}</td>
+        <td>{{entry.fuzzy_label}}</td>
+
+        <!-- Note: a possible improvement would be to open details in a
+             disposable div rather than in a new tab -->
+        <td>
           <span ng-repeat="ref in entry.gmga">
             <a href="/details.html#{{ref}}" target="_blank">[{{ref}}]</a>
           </span>
         </td>
-        <td class="compliant-{{entry.is_compliant}}">
+        <td>
           <span ng-repeat="ref in entry.guidelines">
             <a href="/details.html#{{ref}}" target="_blank">[{{ref}}]</a>
           </span>
