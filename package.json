@@ -9,7 +9,7 @@
   },
   "repository": "https://github.com/nexacenter/roarmap-h2020-view",
   "author": "Simone Basso",
-  "license": "MIT",
+  "license": "ISC",
   "dependencies": {
     "angular": "^1.5.3",
     "angular-route": "^1.5.3",
