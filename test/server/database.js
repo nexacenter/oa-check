@@ -3,6 +3,7 @@
 
 "use strict";
 
+const assert = require("chai").assert;
 const database = require("../../lib/server/database");
 
 describe("database", () => {
@@ -17,24 +18,20 @@ let basicDocument = {
 };
 
 database.update_((err, data) => {
-    console.log(err);
-    console.log(data);
+    assert.isNull(err);
+    assert.deepEqual(JSON.parse(data.val), basicDocument);
 
     database.update_((err, data) => {
-        console.log(err);
-        console.log(data);
-
-        database.update_((err, data) => {
-            console.log(err);
-            console.log(data);
-            done();
-
-        }, (callback) => {
-            basicDocument.foobar.push(4);
-            callback(null, JSON.stringify(basicDocument));
-        });
+        assert.isNull(err);
+        const val = JSON.parse(data.val);
+        assert.strictEqual(val.foo, basicDocument.foo);
+        assert.deepEqual(val.foobar, [1, 2, 3, 4]);
+        assert.strictEqual(val.baz, basicDocument.baz);
+        assert.strictEqual(val.jarjar, basicDocument.jarjar);
+        done();
 
     }, (callback) => {
+        basicDocument.foobar.push(4);
         callback(null, JSON.stringify(basicDocument));
     });
 
