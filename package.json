@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prestart": "./node_modules/.bin/browserify ./lib/common/rules.js ./lib/client/app.js -o static/app.bundle.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha --recursive ./test/"
   },
   "repository": "https://github.com/nexacenter/roarmap-h2020-view",
   "author": "Simone Basso",
@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "js-beautify": "^1.6.2",
-    "jshint": "^2.9.1"
+    "jshint": "^2.9.1",
+    "mocha": "^2.4.5"
   }
 }
