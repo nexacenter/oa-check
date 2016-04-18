@@ -1,5 +1,4 @@
 {
-  "esversion": 5,
   "browserify": "true",
   "node": "false"
 }
