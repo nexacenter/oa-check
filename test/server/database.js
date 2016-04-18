@@ -3,7 +3,7 @@
 
 "use strict";
 
-const database = require("./database");
+const database = require("../../lib/server/database");
 let basicDocument = {
     foo: 3.14,
     foobar: [1, 2, 3],
