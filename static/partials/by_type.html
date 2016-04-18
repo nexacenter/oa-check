@@ -2,9 +2,10 @@
 
   <div ng-show="g.aggregate">
     <ul ng-repeat="(k, v) in g.aggregate">
-      <li>{{k}}</li>
+      <li ng-init="view = false"
+          ng-click="view = !view">{{k}}</li>
       <ul>
-        <li ng-repeat="elem in v">
+        <li ng-repeat="elem in v" ng-show="view">
           <a href="#/institutions/{{elem.eprintid}}">{{elem.title}}</a>
         </li>
       </ul>

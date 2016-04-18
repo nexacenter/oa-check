@@ -1,18 +1,22 @@
 <div ng-controller="ByCountryController">
   <div ng-show="g.aggregate">
+
+    <!-- The following always gives me headache -->
     <ul ng-repeat="(k, v) in g.aggregate">
       <li>{{k}}</li>
       <ul ng-repeat="(k1, v1) in v">
         <li>{{k1}}</li>
         <ul ng-repeat="(k2, v2) in v1">
-          <li>{{k2}}</li>
+          <li ng-init="view = false"
+              ng-click="view = !view">{{k2}}</li>
           <ul ng-repeat="inst in v2">
-            <li>
+            <li ng-show="view">
               <a href="#/institutions/{{inst.eprintid}}">{{inst.title}}</a>
             </li>
           </ul>
         </ul>
       </ul>
     </ul>
+
   </div>
 </div>
