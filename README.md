@@ -1,8 +1,6 @@
 # ROARMAP H2020 View
 
-[![Build Status](https://travis-ci.org/nexacenter/roarmap-h2020-view.svg?branch=master)](https://travis-ci.org/nexacenter/roarmap-h2020-view)
-
-[![bitHound Overall Score](https://www.bithound.io/github/nexacenter/roarmap-h2020-view/badges/score.svg)](https://www.bithound.io/github/nexacenter/roarmap-h2020-view)
+[![Build Status](https://travis-ci.org/nexacenter/roarmap-h2020-view.svg?branch=master)](https://travis-ci.org/nexacenter/roarmap-h2020-view) [![bitHound Overall Score](https://www.bithound.io/github/nexacenter/roarmap-h2020-view/badges/score.svg)](https://www.bithound.io/github/nexacenter/roarmap-h2020-view)
 
 View H2020 compliancy of [ROARMAP](http://roarmap.eprints.org/)
 policies through a local webserver that fetches data directly from
