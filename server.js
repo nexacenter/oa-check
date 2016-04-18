@@ -9,16 +9,10 @@ const program = require("commander");
 program
     .version("0.2.0")
     .option("-d, --dump", "Scrape roarmaps database and dump it to stdout")
-    .option("-t, --test", "Self test scraper and rules")
     .parse(process.argv);
 
 if (program.dump) {
     require("./lib/server/cmd_dump").main();
-    return;
-}
-
-if (program.test) {
-    require("./lib/server/cmd_test").main();
     return;
 }
 

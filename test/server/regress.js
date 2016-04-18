@@ -6,10 +6,12 @@
 const equals = require("equals");
 const filename = "test/fixtures/test-vector.json";
 const fs = require("fs");
-const rules = require("../common/rules");
-const scrape = require("./scrape");
+const rules = require("../../lib/common/rules");
+const scrape = require("../../lib/server/scrape");
 
-exports.main = () => {
+describe("the rules functionality", () => {
+    it("does not introduce regressions", (done) => {
+
     scrape.scrape((err, data) => {
         if (err) {
             throw err;
@@ -25,5 +27,8 @@ exports.main = () => {
 
         const ok = equals(orig, novel);
         console.log(ok);
+        done();
     });
-};
+
+}).timeout(30000);
+});

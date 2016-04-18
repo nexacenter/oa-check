@@ -7,7 +7,7 @@ const database = require("../../lib/server/database");
 
 describe("database", () => {
     describe("update_", () => {
-        it("correctly updates the underlying data base", () => {
+        it("correctly updates the underlying data base", (done) => {
 
 let basicDocument = {
     foo: 3.14,
@@ -27,6 +27,8 @@ database.update_((err, data) => {
         database.update_((err, data) => {
             console.log(err);
             console.log(data);
+            done();
+
         }, (callback) => {
             basicDocument.foobar.push(4);
             callback(null, JSON.stringify(basicDocument));
