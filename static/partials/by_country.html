@@ -1,0 +1,18 @@
+<div ng-controller="ByCountryController">
+  <div ng-show="g.aggregate">
+    <ul ng-repeat="(k, v) in g.aggregate">
+      <li>{{k}}</li>
+      <ul ng-repeat="(k1, v1) in v">
+        <li>{{k1}}</li>
+        <ul ng-repeat="(k2, v2) in v1">
+          <li>{{k2}}</li>
+          <ul ng-repeat="inst in v2">
+            <li>
+              <a href="#/institutions/{{inst.eprintid}}">{{inst.title}}</a>
+            </li>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </div>
+</div>

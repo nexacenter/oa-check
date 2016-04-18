@@ -1,0 +1,14 @@
+<div ng-controller="ByTypeController">
+
+  <div ng-show="g.aggregate">
+    <ul ng-repeat="(k, v) in g.aggregate">
+      <li>{{k}}</li>
+      <ul>
+        <li ng-repeat="elem in v">
+          <a href="#/institutions/{{elem.eprintid}}">{{elem.title}}</a>
+        </li>
+      </ul>
+    </ul>
+  </div>
+
+</div>
