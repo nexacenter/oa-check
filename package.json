@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "prestart": "./node_modules/.bin/browserify ./lib/common/rules.js ./lib/client/app.js -o static/app.bundle.js",
-    "test": "./node_modules/.bin/istanbul cover -- ./node_modules/.bin/_mocha --recursive ./test/"
+    "test": "./node_modules/.bin/_mocha --recursive ./test/",
+    "istanbul": "./node_modules/.bin/istanbul cover -- ./node_modules/.bin/_mocha --recursive ./test/",
+    "coveralls": "./node_modules/.bin/coveralls < coverage/lcov.info"
   },
   "repository": "https://github.com/nexacenter/roarmap-h2020-view",
   "author": "Simone Basso",
@@ -25,6 +27,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "coveralls": "^2.11.9",
     "equals": "^1.0.1",
     "istanbul": "^0.4.3",
     "js-beautify": "^1.6.2",
