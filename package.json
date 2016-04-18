@@ -1,13 +1,13 @@
 {
-  "name": "roarmap-view",
-  "version": "1.0.0",
+  "name": "roarmap-h2020-view",
+  "version": "0.2.0",
   "description": "View roarmap policies",
   "main": "index.js",
   "scripts": {
     "prestart": "./node_modules/.bin/browserify ./lib/common/rules.js ./lib/client/app.js -o static/app.bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "https://github.com/bassosimone/roarmap-view",
+  "repository": "https://github.com/nexacenter/roarmap-h2020-view",
   "author": "Simone Basso",
   "license": "MIT",
   "dependencies": {
