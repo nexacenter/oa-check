@@ -24,6 +24,7 @@
     "node": "5.x"
   },
   "devDependencies": {
+    "equals": "^1.0.1",
     "js-beautify": "^1.6.2",
     "jshint": "^2.9.1",
     "mocha": "^2.4.5"
