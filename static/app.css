@@ -11,3 +11,11 @@ tr:nth-child(even) {
 tr:hover {
     background-color: #f3f781
 }
+
+td.compliant-true {
+    color: #228B22
+}
+
+td.compliant-false {
+    color: #FF0000
+}

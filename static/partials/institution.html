@@ -9,25 +9,40 @@
       (<a href="{{g.selected.uri}}">roarmap url</a>)
       (<a href="{{g.selected.policymaker_url}}">policy maker url</a>)
       (<a href="{{g.selected.repository_url}}">repository url</a>)
-      (<a href="{{g.selected.policy_url}}">policy url</a>)</p>
+      (<a href="{{g.selected.policy_url}}">policy url</a>) <br />
+      compliance: {{g.selected.percentage|number:2}}%</p>
 
-    <ul>
-      <li>compliance: {{g.selected.percentage|number:2}}%</li>
-      <li>compliant with:
-        <ul>
-          <li ng-repeat="entry in g.selected.nexa | filter : { is_compliant: true }">
-            {{entry.field}}
-          </li>
-        </ul>
-      </li>
-      <li>not compliant with:
-        <ul>
-          <li ng-repeat="entry in g.selected.nexa | filter : { is_compliant: false }">
-            {{entry.field}}
-          </li>
-        </ul>
-      </li>
-    </ul>
+    <table>
+      <tr>
+        <th>#</th>
+        <th>field</th>
+        <th>value</th>
+        <th>is-compliant</th>
+        <th>reason</th>
+        <th>caveats</th>
+        <th>guidelines</th>
+        <th>gmga</th>
+      </tr>
+      <tr ng-repeat="entry in g.selected.nexa | orderBy:'field_id'">
+        <td class="compliant-{{entry.is_compliant}}">{{entry.field_id}}</td>
+        <td class="compliant-{{entry.is_compliant}}">{{entry.field}}</td>
+        <td class="compliant-{{entry.is_compliant}}">{{entry.value}}</td>
+        <td class="compliant-{{entry.is_compliant}}">{{entry.is_compliant}}</td>
+        <td class="compliant-{{entry.is_compliant}}">{{entry.reason}}</td>
+        <td class="compliant-{{entry.is_compliant}}">{{entry.fuzzy_label}}</td>
+        <td class="compliant-{{entry.is_compliant}}">
+          <span ng-repeat="ref in entry.gmga">
+            <a href="/details.html#{{ref}}" target="_blank">[{{ref}}]</a>
+          </span>
+        </td>
+        <td class="compliant-{{entry.is_compliant}}">
+          <span ng-repeat="ref in entry.guidelines">
+            <a href="/details.html#{{ref}}" target="_blank">[{{ref}}]</a>
+          </span>
+        </td>
+      </td>
+      <tr>
+    </table>
 
   </div>
 </div>
