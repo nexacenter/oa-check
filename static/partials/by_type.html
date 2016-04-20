@@ -1,11 +1,11 @@
 <div ng-controller="ByTypeController">
 
   <div ng-show="g.aggregate">
-    <ul ng-repeat="(k, v) in g.aggregate">
-      <li ng-init="view = false"
+    <ul ng-repeat="(k, v) in g.aggregate" class="list-group">
+      <li ng-init="view = false" class="list-group-item expandable"
           ng-click="view = !view">{{k}}</li>
-      <ul>
-        <li ng-repeat="elem in v" ng-show="view">
+      <ul class="list-group-item" ng-show="view">
+        <li ng-repeat="elem in v" class="list-group-item">
           <a href="#/institutions/{{elem.eprintid}}">{{elem.title}}</a>
         </li>
       </ul>
