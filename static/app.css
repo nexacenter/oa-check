@@ -32,10 +32,19 @@ span.policymaker_name {
 }
 
 #pasteur-logo {
-    width: 150px;
+    width: 250px;
 }
 
 img.center {
     display: block;
     margin: 0 auto;
+}
+
+.expandable {
+    cursor: pointer;
+    cursor: hand;
+}
+
+hr {
+    visibility: hidden;
 }

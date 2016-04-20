@@ -5,12 +5,13 @@
       <input type="text" ng-model="g.terms">
       <button>Search</button>
     </form>
+    <hr>
     <div ng-show="g.result">
-      <ol>
-        <li ng-repeat="entry in g.result">
+      <ul class="list-group">
+        <li ng-repeat="entry in g.result" class="list-group-item">
           <a href="#/institutions/{{entry.eprintid}}">{{entry.title}}</a>
         </li>
-      </ol>
+      </ul>
     </div>
   </div>
 
