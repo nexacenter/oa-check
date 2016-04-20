@@ -30,3 +30,12 @@ span.policymaker_name {
     margin-bottom: 3px;
     text-align: center;
 }
+
+#pasteur-logo {
+    width: 150px;
+}
+
+img.center {
+    display: block;
+    margin: 0 auto;
+}
