@@ -2,7 +2,7 @@
 
   <div ng-show="g.selected">
 
-    <div>
+    <div class="center">
       <div>
         <span class="policymaker_name">{{g.selected.title}}</span>
         ({{g.selected.policymaker_type}})
@@ -17,12 +17,12 @@
       <div>compliance: {{g.selected.percentage|number:2}}%</div>
     </div>
 
-    <table class="table">
+    <div class="table-responsive"><table
+            class="table table-stripped table-condensed">
       <tr>
         <th>#</th>
         <th>field</th>
         <th>value</th>
-        <th>is-compliant</th>
         <th>reason</th>
         <th>caveats</th>
         <th>guidelines</th>
@@ -36,7 +36,6 @@
         <td>{{entry.field_id}}</td>
         <td>{{entry.field}}</td>
         <td>{{entry.value}}</td>
-        <td>{{entry.is_compliant}}</td>
         <td>{{entry.reason}}</td>
         <td>{{entry.caveats}}</td>
 
@@ -54,7 +53,7 @@
         </td>
       </td>
       <tr>
-    </table>
+    </table></div>
 
   </div>
 </div>
