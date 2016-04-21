@@ -5,3 +5,4 @@
 /roarmap.db
 /static/app.bundle.js
 /test/fixtures/test-vector.json.new
+*.swp
