@@ -3,57 +3,79 @@
   <div ng-show="g.selected">
 
     <div class="center">
+      <div class="h1">{{g.selected.title}}</div>
       <div>
-        <span class="policymaker_name">{{g.selected.title}}</span>
-        ({{g.selected.policymaker_type}})
+        <kbd>Type</kbd> {{g.selected.policymaker_type}}
+        <kbd>Last Modified</kbd> {{g.selected.lastmod}}
       </div>
-      <div>Last Modified: {{g.selected.lastmod}}</div>
       <div>
-        (<a href="{{g.selected.uri}}">roarmap url</a>)
-        (<a href="{{g.selected.policymaker_url}}">policy maker url</a>)
-        (<a href="{{g.selected.repository_url}}">repository url</a>)
-        (<a href="{{g.selected.policy_url}}">policy url</a>)
+        <span ng-show="g.selected.url">
+          (<a href="{{g.selected.uri}}">roarmap url</a>)
+        </span>
+        <span ng-show="g.selected.policymaker_url">
+          (<a href="{{g.selected.policymaker_url}}">policy maker url</a>)
+        </span>
+        <span ng-show="g.selected.repository_url">
+          (<a href="{{g.selected.repository_url}}">repository url</a>)
+        </span>
+        <span ng-show="g.selected.policy_url">
+          (<a href="{{g.selected.policy_url}}">policy url</a>)
+        </span>
       </div>
-      <div>compliance: {{g.selected.percentage|number:2}}%</div>
+      <div class="lead">
+        <kbd>Compliance</kbd> <mark>{{g.selected.percentage|number:2}}%</mark>
+      </div>
     </div>
 
-    <div class="table-responsive"><table
-            class="table table-stripped table-condensed">
-      <tr>
-        <th>#</th>
-        <th>field</th>
-        <th>value</th>
-        <th>reason</th>
-        <th>caveats</th>
-        <th>guidelines</th>
-        <th>gmga</th>
-      </tr>
+    <!-- Note: g.selected.nexa contains evaluation of the H2020 compliance
+         rules developed by Nexa Center -->
+    <ul ng-repeat="entry in g.selected.nexa | orderBy:'field_id'"
+        class="list-group lead">
+      <li class="list-group-item list-group-item-{{entry.color}} expandable"
+          ng-init="view = false" ng-click="view = !view">
+        {{entry.field_id}}. {{entry.field}}
+        <span class="badge">{{entry.is_compliant}}</span>
+        <ul class="list-group-item" ng-show="view">
+          <li class="list-group-item list-group-item-{{entry.color}}">
+            value <span class="badge">{{entry.value}}</span>
+          </li>
+          <li class="list-group-item list-group-item-{{entry.color}}">
+            reason <span class="badge">{{entry.reason}}</span>
+          </li>
+          <li class="list-group-item list-group-item-{{entry.color}}"
+              ng-show="entry.caveats">
+            caveats <span class="badge">{{entry.caveats}}</span>
+          </li>
 
-      <!-- Note: g.selected.nexa contains evaluation of the H2020 compliance
-           rules developed by Nexa Center -->
-      <tr ng-repeat="entry in g.selected.nexa | orderBy:'field_id'"
-          class="compliant-{{entry.is_compliant}}">
-        <td>{{entry.field_id}}</td>
-        <td>{{entry.field}}</td>
-        <td>{{entry.value}}</td>
-        <td>{{entry.reason}}</td>
-        <td>{{entry.caveats}}</td>
-
-        <!-- Note: a possible improvement would be to open details in a
-             disposable div rather than in a new tab -->
-        <td>
-          <span ng-repeat="ref in entry.gmga">
-            <a href="/details.html#{{ref}}" target="_blank">[{{ref}}]</a>
-          </span>
-        </td>
-        <td>
-          <span ng-repeat="ref in entry.guidelines">
-            <a href="/details.html#{{ref}}" target="_blank">[{{ref}}]</a>
-          </span>
-        </td>
-      </td>
-      <tr>
-    </table></div>
+          <!-- Note: a possible improvement would be to open details in a
+            disposable div rather than in a new tab -->
+          <li class="list-group-item list-group-item-{{entry.color}}"
+              ng-show="entry.gmga">
+            gmga refs:
+            <ul class="list-group-item">
+              <li ng-repeat="ref in entry.gmga"
+                  class="list-group-item list-group-item-{{entry.color}}">
+                <a href="/details.html#{{ref}}" target="_blank">
+                  Sect. {{ref}}
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="list-group-item list-group-item-{{entry.color}}"
+              ng-show="entry.guidelines">
+            guidelines refs:
+            <ul class="list-group-item">
+              <li ng-repeat="ref in entry.guidelines"
+                  class="list-group-item list-group-item-{{entry.color}}">
+                <a href="/details.html#{{ref}}" target="_blank">
+                  Sect. {{ref}}
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
 
   </div>
 </div>
