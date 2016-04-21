@@ -1,24 +1,3 @@
-th {
-    background-color: #4CAF50;
-    color: white;
-}
-
-tr:nth-child(even) {
-    background-color: #f2f2f2
-}
-
-tr:hover {
-    background-color: #f3f781
-}
-
-.compliant-true {
-    color: #228B22
-}
-
-.compliant-false {
-    color: #FF0000
-}
-
 span.policymaker_name {
     font-weight: bold;
 }
