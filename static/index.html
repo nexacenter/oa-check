@@ -10,7 +10,7 @@
   </head>
 
   <body ng-app="roarmap-h2020-view">
-    <div class="container">
+    <div class="container" ng-controller="MainController">
 
       <div class="hidden-sm hidden-xs">
         <a href="https://github.com/nexacenter/roarmap-h2020-view">
@@ -26,7 +26,8 @@
           <img src="img/pasteur.png" alt="Pasteur4oa logo" class="center"
                id="pasteur-logo" />
         </a>
-        View H2020 compliancy of ROARMAP policies.
+        View H2020 compliancy of
+          <a href="https://roarmap.eprints.org/">ROARMAP</a> policies.
       </div>
 
       <div>
@@ -38,6 +39,11 @@
       </div>
 
       <hr>
+      <div class="center">
+        <mark ng-show="!g.is_loaded" class="lead">
+          Loading ROARMAP data... please wait...
+        </mark>
+      </div>
       <div class="row" ng-view></div>
     </div>
 
