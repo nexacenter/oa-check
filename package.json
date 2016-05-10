@@ -24,7 +24,7 @@
     "nedb": "^1.8.0"
   },
   "engines": {
-    "node": "5.x"
+    "node": "6.x"
   },
   "devDependencies": {
     "chai": "^3.5.0",
