@@ -51,24 +51,26 @@
             disposable div rather than in a new tab -->
           <li class="list-group-item list-group-item-{{entry.color}}"
               ng-show="entry.gmga">
-            gmga refs:
+            <a href="http://ec.europa.eu/research/participants/data/ref/h2020/mga/gga/h2020-mga-gga-multi_en.pdf">GMGA</a> refs:
             <ul class="list-group-item">
               <li ng-repeat="ref in entry.gmga"
                   class="list-group-item list-group-item-{{entry.color}}">
+                Sect.
                 <a href="/details.html#{{ref}}" target="_blank">
-                  Sect. {{ref}}
+                  {{ref}}
                 </a>
               </li>
             </ul>
           </li>
           <li class="list-group-item list-group-item-{{entry.color}}"
               ng-show="entry.guidelines">
-            guidelines refs:
+            <a href="https://ec.europa.eu/research/participants/data/ref/h2020/grants_manual/hi/oa_pilot/h2020-hi-oa-pilot-guide_en.pdf">Guidelines</a> refs:
             <ul class="list-group-item">
               <li ng-repeat="ref in entry.guidelines"
                   class="list-group-item list-group-item-{{entry.color}}">
+                Sect.
                 <a href="/details.html#{{ref}}" target="_blank">
-                  Sect. {{ref}}
+                  {{ref}}
                 </a>
               </li>
             </ul>
