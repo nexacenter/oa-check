@@ -1,6 +1,6 @@
 {
-  "name": "roarmap-h2020-view",
-  "version": "0.2.0",
+  "name": "oa-check",
+  "version": "0.2.4",
   "description": "View roarmap policies",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "istanbul": "./node_modules/.bin/istanbul cover -- ./node_modules/.bin/_mocha --recursive ./test/",
     "coveralls": "./node_modules/.bin/coveralls < coverage/lcov.info"
   },
-  "repository": "https://github.com/nexacenter/roarmap-h2020-view",
+  "repository": "https://github.com/nexacenter/oa-check",
   "author": "Simone Basso",
   "license": "ISC",
   "dependencies": {
