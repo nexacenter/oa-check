@@ -1,4 +1,4 @@
-# ROARMAP H2020 View
+# Open Access H2020 Compliancy Check
 
 [![Build Status](https://travis-ci.org/nexacenter/oa-check.svg?branch=master)](https://travis-ci.org/nexacenter/oa-check) [![bitHound Overall Score](https://www.bithound.io/github/nexacenter/roarmap-h2020-view/badges/score.svg)](https://www.bithound.io/github/nexacenter/roarmap-h2020-view) [![Coverage Status](https://coveralls.io/repos/github/nexacenter/roarmap-h2020-view/badge.svg?branch=master)](https://coveralls.io/github/nexacenter/roarmap-h2020-view?branch=master)
 
