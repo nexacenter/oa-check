@@ -37,14 +37,14 @@
         <span class="badge">{{entry.is_compliant}}</span>
         <ul class="list-group-item" ng-show="view">
           <li class="list-group-item list-group-item-{{entry.color}}">
-            value <span class="badge">{{entry.value}}</span>
+            value: {{entry.value}}
           </li>
           <li class="list-group-item list-group-item-{{entry.color}}">
-            reason <span class="badge">{{entry.reason}}</span>
+            reason: {{entry.reason}}
           </li>
           <li class="list-group-item list-group-item-{{entry.color}}"
               ng-show="entry.caveats">
-            caveats <span class="badge">{{entry.caveats}}</span>
+            caveats: {{entry.caveats}}
           </li>
 
           <!-- Note: a possible improvement would be to open details in a
