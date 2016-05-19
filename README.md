@@ -1,12 +1,12 @@
 # ROARMAP H2020 View
 
-[![Build Status](https://travis-ci.org/nexacenter/roarmap-h2020-view.svg?branch=master)](https://travis-ci.org/nexacenter/roarmap-h2020-view) [![bitHound Overall Score](https://www.bithound.io/github/nexacenter/roarmap-h2020-view/badges/score.svg)](https://www.bithound.io/github/nexacenter/roarmap-h2020-view) [![Coverage Status](https://coveralls.io/repos/github/nexacenter/roarmap-h2020-view/badge.svg?branch=master)](https://coveralls.io/github/nexacenter/roarmap-h2020-view?branch=master)
+[![Build Status](https://travis-ci.org/nexacenter/oa-check.svg?branch=master)](https://travis-ci.org/nexacenter/oa-check) [![bitHound Overall Score](https://www.bithound.io/github/nexacenter/roarmap-h2020-view/badges/score.svg)](https://www.bithound.io/github/nexacenter/roarmap-h2020-view) [![Coverage Status](https://coveralls.io/repos/github/nexacenter/roarmap-h2020-view/badge.svg?branch=master)](https://coveralls.io/github/nexacenter/roarmap-h2020-view?branch=master)
 
 View H2020 compliancy of [ROARMAP](http://roarmap.eprints.org/)
 policies through a local webserver that fetches data directly from
 the ROARMAP web site and web API.
 
-You need to have [node](https://nodejs.org) >= 5.x installed. To install
+You need to have [node](https://nodejs.org) >= 6.x installed. To install
 dependencies and start the local webserver run:
 
 ```
