@@ -1,7 +1,7 @@
 {
   "name": "oa-check",
-  "version": "0.2.4",
-  "description": "View roarmap policies",
+  "version": "0.3.0",
+  "description": "View H2020 compliancy of roarmap policies",
   "main": "index.js",
   "scripts": {
     "prestart": "./node_modules/.bin/browserify ./lib/common/rules.js ./lib/client/app.js -o static/app.bundle.js",
