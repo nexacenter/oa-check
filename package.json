@@ -1,6 +1,6 @@
 {
   "name": "oa-check",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "View H2020 compliancy of roarmap policies",
   "main": "index.js",
   "scripts": {
