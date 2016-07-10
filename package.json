@@ -13,14 +13,14 @@
   "author": "Simone Basso",
   "license": "ISC",
   "dependencies": {
-    "angular": "^1.5.3",
-    "angular-route": "^1.5.3",
+    "angular": "^1.5.7",
+    "angular-route": "^1.5.7",
     "bootstrap": "^3.3.6",
-    "browserify": "^13.0.0",
+    "browserify": "^13.0.1",
     "commander": "^2.9.0",
-    "express": "^4.13.4",
-    "jquery": "^2.2.3",
-    "jsdom": "^9.0.0",
+    "express": "^4.14.0",
+    "jquery": "^3.1.0",
+    "jsdom": "^9.4.1",
     "nedb": "^1.8.0"
   },
   "engines": {
@@ -29,10 +29,10 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "coveralls": "^2.11.9",
-    "equals": "^1.0.1",
-    "istanbul": "^0.4.3",
-    "js-beautify": "^1.6.2",
-    "jshint": "^2.9.1",
-    "mocha": "^2.4.5"
+    "equals": "^1.0.5",
+    "istanbul": "^0.4.4",
+    "js-beautify": "^1.6.3",
+    "jshint": "^2.9.2",
+    "mocha": "^2.5.3"
   }
 }
